@@ -120,6 +120,8 @@ function calculateDamage() {
         document.getElementById("remainingHp").textContent =
             remainingHp;
     }
+}
+
 // 入力値が変更されたら自動的に計算する
 document.getElementById("attackPower").addEventListener("input", calculateDamage);
 document.getElementById("damageAdd").addEventListener("input", calculateDamage);
@@ -129,5 +131,3 @@ document.getElementById("damageReduce").addEventListener("input", calculateDamag
 
 // ページを開いたときにも計算する
 calculateDamage();
-
-}
