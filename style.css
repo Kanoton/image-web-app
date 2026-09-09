@@ -1,0 +1,47 @@
+body {
+    font-family: sans-serif;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    margin-top: 30px;
+}
+
+label {
+    display: inline-block;
+    margin: 8px 0;
+}
+
+input {
+    width: 80px;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+th {
+    font-weight: bold;
+}
