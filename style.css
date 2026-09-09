@@ -152,31 +152,25 @@ tbody th {
 
 
 /* =================================
-   分析結果
+   期待値・撃破確率
    ================================= */
 
-.analysis-area {
-    margin-top: 40px;
+.analysis-values {
+    display: flex;
 
-    padding: 25px;
+    justify-content: space-around;
+
+    align-items: center;
+
+    margin-top: 20px;
+
+    padding: 15px;
 
     background-color: #eefaf7;
 
     border: 2px solid #9dd;
 
     border-radius: 8px;
-}
-
-
-.analysis-area h2 {
-    margin-top: 0;
-}
-
-
-.analysis-values {
-    display: flex;
-
-    justify-content: space-around;
 
     text-align: center;
 }
@@ -187,7 +181,9 @@ tbody th {
 
     flex-direction: column;
 
-    gap: 10px;
+    gap: 5px;
+
+    flex: 1;
 }
 
 
