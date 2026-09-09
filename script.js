@@ -83,8 +83,12 @@ function calculateDamage() {
 
             // 表のセルを作る
             const cell = document.createElement("td");
-
             cell.textContent = finalDamage;
+
+            // HP以上のダメージなら撃破可能として色を付ける
+            if (finalDamage >= hp) {
+                cell.classList.add("defeat");
+            }
 
             row.appendChild(cell);
 
