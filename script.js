@@ -41,6 +41,17 @@ function calculateDamage() {
         // 表の1行を作る
         const row = document.createElement("tr");
 
+
+        // 「攻撃」を6行にまたがって表示
+        if (attackDice === 1) {
+            const attackLabel = document.createElement("th");
+            attackLabel.textContent = "攻撃";
+            attackLabel.rowSpan = 6;
+            attackLabel.classList.add("attack-label");
+            row.appendChild(attackLabel);
+        }
+
+
         // 攻撃側ダイスの表示
         const attackCell = document.createElement("th");
         attackCell.textContent = attackDice;
@@ -84,6 +95,7 @@ function calculateDamage() {
             // 表のセルを作る
             const cell = document.createElement("td");
             cell.textContent = finalDamage;
+
 
             // HP以上のダメージなら撃破可能として色を付ける
             if (finalDamage >= hp) {
