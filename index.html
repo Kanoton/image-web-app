@@ -3,18 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画像データベース</title>
+    <title>ダメージ計算ツール</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>画像データベース</h1>
+    <h1>ダメージ計算ツール</h1>
 
-    <h2>Sherry</h2>
-    <img src="images/Sherry_Sprite.png" alt="Sherry" hight="100">
+    <h2>攻撃側</h2>
 
-    <h2>Watcher</h2>
-    <img src="images/Watcher_Sprite.png" alt="Watcher" hight="100">
+    <label>
+        攻撃力：
+        <input type="number" id="attackPower" value="10">
+    </label>
+
+    <br>
+
+    <label>
+        ダメージ加算値：
+        <input type="number" id="damageAdd" value="2">
+    </label>
+
+
+    <h2>防御側</h2>
+
+    <label>
+        HP：
+        <input type="number" id="hp" value="30">
+    </label>
+
+    <br>
+
+    <label>
+        防御力：
+        <input type="number" id="defensePower" value="5">
+    </label>
+
+    <br>
+
+    <label>
+        ダメージ軽減値：
+        <input type="number" id="damageReduce" value="1">
+    </label>
+
+    <br><br>
+
+    <button onclick="calculateDamage()">ダメージ計算</button>
+
+    <h2>ダメージ表</h2>
+
+    <table id="damageTable">
+        <thead>
+            <tr>
+                <th>攻撃＼防御</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
+
+    <h2>結果</h2>
+
+    <p>防御側HP：<span id="currentHp">30</span></p>
+    <p>ダメージ：<span id="resultDamage">-</span></p>
+    <p>残りHP：<span id="remainingHp">-</span></p>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
+ここで覚えてほしいこと
