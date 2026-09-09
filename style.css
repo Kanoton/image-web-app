@@ -141,6 +141,14 @@ tbody th {
     background-color: #fde7e7;
 }
 
+/* 攻撃の縦見出し */
+
+.attack-label {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 18px;
+    background-color: #fde7e7;
+}
 
 /* =================================
    撃破可能なダメージ
