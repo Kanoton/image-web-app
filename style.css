@@ -157,31 +157,6 @@ tbody th {
     position: relative;
 }
 
-
-/* 左上から右下への斜め罫線 */
-
-#damageTable thead tr:first-child th:first-child::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background: linear-gradient(
-        45deg,
-        transparent 49.5%,
-        #999 49.5%,
-        #999 50.5%,
-        transparent 50.5%
-    );
-
-    pointer-events: none;
-}
-
 /* =================================
    撃破可能なダメージ
    ================================= */
