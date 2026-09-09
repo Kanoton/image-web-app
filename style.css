@@ -150,7 +150,15 @@ tbody th {
     background-color: #fde7e7;
 }
 
-/* 左上セルの斜め罫線 */
+/* 左上の結合セル */
+
+#damageTable thead tr:first-child th:first-child {
+    background-color: white;
+    position: relative;
+}
+
+
+/* 左上から右下への斜め罫線 */
 
 #damageTable thead tr:first-child th:first-child::after {
     content: "";
@@ -163,14 +171,13 @@ tbody th {
     width: 100%;
     height: 100%;
 
-    background:
-        linear-gradient(
-            to top right,
-            transparent 49.5%,
-            #999 49.5%,
-            #999 50.5%,
-            transparent 50.5%
-        );
+    background: linear-gradient(
+        45deg,
+        transparent 49.5%,
+        #999 49.5%,
+        #999 50.5%,
+        transparent 50.5%
+    );
 
     pointer-events: none;
 }
