@@ -1,47 +1,201 @@
 body {
     font-family: sans-serif;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 30px auto;
     padding: 20px;
 }
 
+
+/* タイトル */
+
 h1 {
     text-align: center;
+    margin-bottom: 40px;
 }
 
-h2 {
-    margin-top: 30px;
+
+/* =================================
+   メイン部分
+   ================================= */
+
+.main-container {
+    display: grid;
+
+    /* 左：パラメータ　右：ダメージ表 */
+    grid-template-columns: 300px 1fr;
+
+    gap: 40px;
+
+    align-items: start;
 }
+
+
+/* =================================
+   パラメータ
+   ================================= */
+
+.parameter-area {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+
+/* 攻撃側 */
+
+.attack-panel {
+    background-color: #fde7e7;
+    border-left: 8px solid #e88;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+/* 防御側 */
+
+.defense-panel {
+    background-color: #e7f0fd;
+    border-left: 8px solid #69c;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+/* パネル内の見出し */
+
+.attack-panel h2 {
+    color: #b44;
+    margin-top: 0;
+}
+
+.defense-panel h2 {
+    color: #357;
+    margin-top: 0;
+}
+
+
+/* 入力項目 */
 
 label {
-    display: inline-block;
-    margin: 8px 0;
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 15px 0;
 }
+
+
+/* 数値入力 */
 
 input {
-    width: 80px;
-    padding: 5px;
-    margin-left: 10px;
+    width: 70px;
+    padding: 6px;
+    font-size: 16px;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+
+/* =================================
+   ダメージ表
+   ================================= */
+
+.damage-area {
+    overflow-x: auto;
 }
+
+.damage-area h2 {
+    margin-top: 0;
+}
+
 
 table {
     border-collapse: collapse;
-    margin-top: 15px;
+    width: 100%;
+
+    min-width: 550px;
 }
+
 
 th,
 td {
-    border: 1px solid black;
-    padding: 10px 15px;
+    border: 1px solid #aaa;
+
+    text-align: center;
+
+    padding: 12px;
+
+    font-size: 18px;
+}
+
+
+/* 表の見出し */
+
+thead th {
+    background-color: #e7f0fd;
+}
+
+
+/* 左端の攻撃側出目 */
+
+tbody th {
+    background-color: #fde7e7;
+}
+
+
+/* =================================
+   撃破可能なダメージ
+   ================================= */
+
+.defeat {
+    background-color: #ffd9a8;
+}
+
+
+/* =================================
+   分析結果
+   ================================= */
+
+.analysis-area {
+    margin-top: 40px;
+
+    padding: 25px;
+
+    background-color: #eefaf7;
+
+    border: 2px solid #9dd;
+
+    border-radius: 8px;
+}
+
+
+.analysis-area h2 {
+    margin-top: 0;
+}
+
+
+.analysis-values {
+    display: flex;
+
+    justify-content: space-around;
+
     text-align: center;
 }
 
-th {
-    font-weight: bold;
+
+.analysis-values div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.analysis-values span {
+    font-size: 18px;
+}
+
+
+.analysis-values strong {
+    font-size: 32px;
 }
