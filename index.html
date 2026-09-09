@@ -9,71 +9,102 @@
 </head>
 
 <body>
+<h1>ダメージ計算ツール</h1>
 
-    <h1>ダメージ計算ツール</h1>
+<div class="main-container">
 
-    <h2>攻撃側</h2>
+    <!-- 左側：パラメータ -->
+    <div class="parameter-area">
 
-    <label>
-        攻撃力：
-        <input type="number" id="attackPower" value="1" min="0">
-    </label>
-    <br>
-    <label>
-        ダメージ加算値：
-        <input type="number" id="damageAdd" value="0" min="0">
-    </label>
+        <section class="attack-panel">
+            <h2>攻撃側</h2>
 
-    <h2>防御側</h2>
-    <label>
-        HP：
-        <input type="number" id="hp" value="5" min="0">
-    </label>
-    <br>
-    <label>
-        防御力：
-        <input type="number" id="defensePower" value="1" min="0">
-    </label>
-    <br>
-    <label>
-        ダメージ軽減値：
-        <input type="number" id="damageReduce" value="0" min="0">
-    </label>
+            <label>
+                攻撃力：
+                <input type="number" id="attackPower" value="1" min="0">
+            </label>
 
-    <br><br>
+            <label>
+                ダメージ加算値：
+                <input type="number" id="damageAdd" value="0" min="0">
+            </label>
+        </section>
 
-    <h2>ダメージ表</h2>
 
-    <table id="damageTable">
-        <thead>
-            <tr>
-                <th>攻撃＼防御</th>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
-                <th>6</th>
-            </tr>
-        </thead>
+        <section class="defense-panel">
+            <h2>防御側</h2>
 
-        <tbody>
-        </tbody>
-    </table>
+            <label>
+                HP：
+                <input type="number" id="hp" value="5" min="0">
+            </label>
+
+            <label>
+                防御力：
+                <input type="number" id="defensePower" value="1" min="0">
+            </label>
+
+            <label>
+                ダメージ軽減値：
+                <input type="number" id="damageReduce" value="0" min="0">
+            </label>
+        </section>
+
+    </div>
+
+
+    <!-- 右側：ダメージ表 -->
+    <div class="damage-area">
+
+        <h2>ダメージ表</h2>
+
+        <table id="damageTable">
+
+            <thead>
+                <tr>
+                    <th>攻撃＼防御</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- 分析結果 -->
+<section class="analysis-area">
 
     <h2>分析結果</h2>
-   
-    <p>
-        最終ダメージ期待値：
-        <span id="expectedDamage">-</span>
-    </p>
 
-    <p>
-        撃破確率：
-        <span id="defeatRate">-</span>
-    </p>
+    <div class="analysis-values">
 
-    <script src="script.js"></script>
+        <div>
+            <span>最終ダメージ期待値</span>
+            <strong id="expectedDamage">-</strong>
+        </div>
+
+        <div>
+            <span>撃破確率</span>
+            <strong id="defeatRate">-</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
