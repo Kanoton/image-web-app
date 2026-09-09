@@ -150,11 +150,6 @@ tbody th {
     background-color: #fde7e7;
 }
 
-/* 表の左上の結合セル */
-#damageTable thead tr:first-child th:first-child {
-    background-color: white;
-    position: relative;
-}
 /* 左上セルの斜め罫線 */
 
 #damageTable thead tr:first-child th:first-child::after {
@@ -179,6 +174,7 @@ tbody th {
 
     pointer-events: none;
 }
+
 /* =================================
    撃破可能なダメージ
    ================================= */
