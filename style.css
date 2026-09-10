@@ -107,7 +107,18 @@ label {
     width: 70px;
     height: 32px;
     box-sizing: border-box;
-    text-align: center;
+    text-align: center !important;
+}
+
+/* 数値入力欄の▲▼ボタンを非表示 */
+.number-control input::-webkit-inner-spin-button,
+.number-control input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-control input {
+    -moz-appearance: textfield;
 }
 
 /* =================================
