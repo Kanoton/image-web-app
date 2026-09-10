@@ -147,6 +147,28 @@ document.getElementById("hp").addEventListener("input", calculateDamage);
 document.getElementById("defensePower").addEventListener("input", calculateDamage);
 document.getElementById("damageReduce").addEventListener("input", calculateDamage);
 
+// ＋・−ボタンで入力値を変更する
+document.querySelectorAll(".plus-button").forEach(button => {
+    button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.target);
+
+        input.value = Number(input.value) + 1;
+        input.dispatchEvent(new Event("input"));
+    });
+});
+
+document.querySelectorAll(".minus-button").forEach(button => {
+    button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.target);
+
+        const newValue = Number(input.value) - 1;
+
+        if (newValue >= 0) {
+            input.value = newValue;
+            input.dispatchEvent(new Event("input"));
+        }
+    });
+});
 
 // ページを開いたときにも計算する
 calculateDamage();
