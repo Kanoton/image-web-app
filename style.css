@@ -105,10 +105,10 @@ label {
 
 .number-control input {
     width: 70px;
+    height: 32px;
     box-sizing: border-box;
     text-align: center;
 }
-
 
 /* =================================
    ダメージ表
