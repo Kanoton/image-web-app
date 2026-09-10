@@ -111,20 +111,18 @@ input {
 table {
     border-collapse: collapse;
     width: 100%;
-
     min-width: 550px;
+    table-layout: fixed;
 }
 
 
 th,
 td {
     border: 1px solid #aaa;
-
     text-align: center;
-
     padding: 12px;
-
     font-size: 18px;
+    overflow: hidden;
 }
 
 
