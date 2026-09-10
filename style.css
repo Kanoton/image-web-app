@@ -85,13 +85,28 @@ label {
     margin: 15px 0;
 }
 
+/* ＋・−ボタン付き数値入力 */
 
-/* 数値入力 */
+.number-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-input {
+.number-control button {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+}
+
+.number-control input {
     width: 70px;
-    padding: 6px;
-    font-size: 16px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 
