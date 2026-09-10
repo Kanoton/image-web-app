@@ -21,12 +21,20 @@
 
             <label>
                 攻撃：
-                <input type="number" id="attackPower" value="1" min="0">
+                <div class="number-control">
+                    <button type="button" class="minus-button" data-target="attackPower">−</button>
+                    <input type="number" id="attackPower" value="1" min="0">
+                    <button type="button" class="plus-button" data-target="attackPower">＋</button>
+                </div>
             </label>
 
             <label>
                 加算：
-                <input type="number" id="damageAdd" value="0" min="0">
+                <div class="number-control">
+                    <button type="button" class="minus-button" data-target="damageAdd">−</button>
+                    <input type="number" id="damageAdd" value="0" min="0">
+                    <button type="button" class="plus-button" data-target="damageAdd">＋</button>
+                </div>
             </label>
         </section>
 
@@ -36,18 +44,30 @@
 
             <label>
                 HP：
-                <input type="number" id="hp" value="5" min="0">
+                <div class="number-control">
+                    <button type="button" class="minus-button" data-target="hp">−</button>
+                    <input type="number" id="hp" value="5" min="0">
+                    <button type="button" class="plus-button" data-target="hp">＋</button>
+                </div>
             </label>
 
             <label>
                 防御：
-                <input type="number" id="defensePower" value="1" min="0">
+                <div class="number-control">
+                    <button type="button" class="minus-button" data-target="defensePower">−</button>
+                    <input type="number" id="defensePower" value="1" min="0">
+                    <button type="button" class="plus-button" data-target="defensePower">＋</button>
+                </div>
             </label>
 
-            <label>
-                軽減：
-                <input type="number" id="damageReduce" value="0" min="0">
-            </label>
+<label>
+    軽減：
+    <div class="number-control">
+        <button type="button" class="minus-button" data-target="damageReduce">−</button>
+        <input type="number" id="damageReduce" value="0" min="0">
+        <button type="button" class="plus-button" data-target="damageReduce">＋</button>
+    </div>
+</label>
         </section>
 
     </div>
