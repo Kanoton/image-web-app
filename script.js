@@ -31,6 +31,10 @@ function calculateDamage(calculator) {
     // 撃破できる組み合わせ数
     let defeatCount = 0;
 
+    // 下段の防御側計算では、生存できる組み合わせ数を数える
+    let survivalCount = 0;
+    const isDefenseCalculator = calculator.classList.contains("defense-calculator");
+
     // ダイスの組み合わせ数
     const totalCombinations = 36;
 
@@ -97,9 +101,15 @@ function calculateDamage(calculator) {
             cell.textContent = finalDamage;
 
 
-            // HP以上のダメージなら撃破可能として色を付ける
-            if (finalDamage >= hp) {
-                cell.classList.add("defeat");
+            // 上段はHP以上で撃破可能、下段はHP未満で生存可能として色を付ける
+            if (isDefenseCalculator) {
+                if (finalDamage < hp) {
+                    cell.classList.add("survival");
+                }
+            } else {
+                if (finalDamage >= hp) {
+                    cell.classList.add("defeat");
+                }
             }
 
             row.appendChild(cell);
@@ -109,9 +119,12 @@ function calculateDamage(calculator) {
             totalDamage += finalDamage;
 
 
-            // HP以上のダメージなら撃破
+            // HP以上なら撃破、HP未満なら生存
             if (finalDamage >= hp) {
                 defeatCount++;
+            }
+            if (finalDamage < hp) {
+                survivalCount++;
             }
         }
 
@@ -126,9 +139,10 @@ function calculateDamage(calculator) {
         totalDamage / totalCombinations;
 
 
-    // 撃破確率
-    const defeatRate =
-        (defeatCount / totalCombinations) * 100;
+    // 上段は撃破率、下段は生存率
+    const resultRate = isDefenseCalculator
+        ? (survivalCount / totalCombinations) * 100
+        : (defeatCount / totalCombinations) * 100;
 
 
     // 結果を表示
@@ -136,7 +150,7 @@ function calculateDamage(calculator) {
         expectedDamage.toFixed(2);
 
     calculator.querySelector(".defeat-rate").textContent =
-        defeatRate.toFixed(2) + "%";
+        resultRate.toFixed(2) + "%";
 }
 
 

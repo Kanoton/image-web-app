@@ -204,6 +204,12 @@ tbody th {
     background-color: #ffd9a8;
 }
 
+/* 下段：生存可能なダメージ */
+
+.survival {
+    background-color: #ffd9a8;
+}
+
 
 /* =================================
    期待値・撃破確率
