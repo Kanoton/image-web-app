@@ -213,12 +213,16 @@ tbody th {
 
 /* =================================
    攻撃・防御 切り替えタブ
+   ※タブはメイン枠の外側・下部に配置
    ================================= */
 .role-tabs {
     width: 300px;
     display: flex;
-    gap: 4px;
-    margin-top: -1px;
+    gap: 0;
+    margin-top: 0;
+    margin-left: 1px;
+    position: relative;
+    z-index: 2;
 }
 
 .role-tab {
@@ -243,26 +247,27 @@ tbody th {
     color: #357;
 }
 
+/* 選択中のタブは、非選択時と同じ背景色を維持しつつ枠線だけ表示 */
 .role-tab.active.attack-tab {
-    border-color: #ef6b6b;
+    border-left-color: #ef6b6b;
+    border-right-color: #ef6b6b;
+    border-bottom-color: #ef6b6b;
     border-top: 0;
-    background-color: #fff;
+    background-color: #fde7e7;
 }
 
 .role-tab.active.defense-tab {
-    border-color: #5f9bd3;
+    border-left-color: #5f9bd3;
+    border-right-color: #5f9bd3;
+    border-bottom-color: #5f9bd3;
     border-top: 0;
-    background-color: #fff;
+    background-color: #e7f0fd;
 }
 
 @media (max-width: 800px) {
     body {
         margin: 15px auto;
         padding: 10px;
-    }
-
-    h1 {
-        margin-bottom: 25px;
     }
 
     .main-container {
