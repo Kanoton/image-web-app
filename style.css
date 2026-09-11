@@ -329,7 +329,7 @@ tbody th {
 
 /* 「パラメータ入力」と「効果による変動」の間 */
 .parameter-area {
-    gap: 12px;
+    gap: 20px;
     padding-top: 0;
     padding-bottom: 6px;
 }
