@@ -329,16 +329,13 @@ tbody th {
 
 /* 「パラメータ入力」と「効果による変動」の間 */
 .parameter-area {
-    gap: 20px;
+    gap: 12px;
+    padding-top: 0;
+    padding-bottom: 6px;
 }
 
 
 /* 増加・軽減 */
 .effect-panel label {
-    margin: 10px 0;
-}
-
-.parameter-area {
-    padding-top: 0;
-    padding-bottom: 6px;
+    margin: 4px 0;
 }
