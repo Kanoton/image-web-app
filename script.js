@@ -76,7 +76,6 @@ function calculateDamage(calculator, isSurvival = false) {
             }
 
             row.appendChild(cell);
-
             totalDamage += finalDamage;
         }
 
@@ -106,7 +105,9 @@ function calculateDamage(calculator, isSurvival = false) {
 
 
 // 各モードを初期化
-document.querySelectorAll(".mode-content").forEach(mode => {
+const modes = document.querySelectorAll(".mode-content");
+
+modes.forEach(mode => {
 
     const isSurvival =
         mode.dataset.role === "defense";
@@ -147,6 +148,9 @@ document.querySelectorAll(".mode-content").forEach(mode => {
 
 
 // 攻撃・防御タブの切り替え
+const mainContainer = document.querySelector(".main-container");
+
+
 document.querySelectorAll(".role-tab").forEach(tab => {
 
     tab.addEventListener("click", () => {
@@ -160,11 +164,21 @@ document.querySelectorAll(".role-tab").forEach(tab => {
             );
         });
 
-        document.querySelectorAll(".mode-content").forEach(mode => {
+        modes.forEach(mode => {
             mode.classList.toggle(
                 "active",
                 mode.dataset.role === selectedRole
             );
         });
+
+        mainContainer.classList.toggle(
+            "attack-mode",
+            selectedRole === "attack"
+        );
+
+        mainContainer.classList.toggle(
+            "defense-mode",
+            selectedRole === "defense"
+        );
     });
 });

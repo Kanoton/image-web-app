@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: sans-serif;
     max-width: 1100px;
@@ -5,34 +9,37 @@ body {
     padding: 20px;
 }
 
-
 /* タイトル */
-
 h1 {
     text-align: center;
-    margin-bottom: 40px;
+    margin: 0 0 40px;
 }
 
-
 /* =================================
-   メイン部分
+   ツール全体
    ================================= */
+.tool-wrapper {
+    width: 100%;
+}
 
 .main-container {
     position: relative;
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 300px minmax(0, 1fr);
     gap: 25px;
     align-items: start;
-    border: 1px solid #aaa;
+    width: 100%;
     padding: 15px;
-    padding-bottom: 65px;
-    box-sizing: border-box;
+    border: 3px solid #ef6b6b;
+    border-radius: 5px;
+    background: #fff;
 }
 
+.main-container.defense-mode {
+    border-color: #5f9bd3;
+}
 
 /* モード切り替え */
-
 .mode-content {
     display: contents;
 }
@@ -41,19 +48,15 @@ h1 {
     display: none;
 }
 
-
 /* =================================
    パラメータ
    ================================= */
-
 .parameter-area {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-width: 0;
 }
-
-
-/* 攻撃側 */
 
 .attack-panel {
     background-color: #fde7e7;
@@ -62,9 +65,6 @@ h1 {
     border-radius: 8px;
 }
 
-
-/* 防御側 */
-
 .defense-panel {
     background-color: #e7f0fd;
     border-left: 8px solid #69c;
@@ -72,21 +72,15 @@ h1 {
     border-radius: 8px;
 }
 
-
-/* パネル内の見出し */
-
 .attack-panel h2 {
     color: #b44;
-    margin-top: 0;
+    margin: 0;
 }
 
 .defense-panel h2 {
     color: #357;
-    margin-top: 0;
+    margin: 0;
 }
-
-
-/* 入力項目 */
 
 label {
     display: flex;
@@ -96,13 +90,11 @@ label {
     margin: 15px 0;
 }
 
-
-/* ＋・−ボタン付き数値入力 */
-
 .number-control {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .number-control button {
@@ -122,9 +114,6 @@ label {
     text-align: center !important;
 }
 
-
-/* 数値入力欄の▲▼ボタンを非表示 */
-
 .number-control input::-webkit-inner-spin-button,
 .number-control input::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -139,27 +128,19 @@ label {
     font-size: 18px;
 }
 
-
 /* =================================
    ダメージ表
    ================================= */
-
 .damage-area {
-    overflow-x: auto;
+    min-width: 0;
+    overflow: hidden;
 }
-
-.damage-area h2 {
-    margin-top: 0;
-}
-
 
 table {
     border-collapse: collapse;
     width: 100%;
-    min-width: 550px;
     table-layout: fixed;
 }
-
 
 th,
 td {
@@ -170,22 +151,13 @@ td {
     overflow: hidden;
 }
 
-
-/* 表の見出し */
-
 thead th {
     background-color: #e7f0fd;
 }
 
-
-/* 左端の攻撃側出目 */
-
 tbody th {
     background-color: #fde7e7;
 }
-
-
-/* 攻撃の縦見出し */
 
 .attack-label {
     writing-mode: vertical-rl;
@@ -194,32 +166,26 @@ tbody th {
     background-color: #fde7e7;
 }
 
-
-/* 左上の結合セル */
-
 .damage-table thead tr:first-child th:first-child {
     background-color: white;
     position: relative;
 }
 
-
 /* =================================
    撃破可能なダメージ
    ================================= */
-
 .defeat {
     background-color: #ffd9a8;
 }
 
-
 /* =================================
    期待値・確率
    ================================= */
-
 .analysis-values {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 100%;
     margin-top: 15px;
     padding: 12px;
     background-color: #eefaf7;
@@ -227,7 +193,6 @@ tbody th {
     border-radius: 8px;
     text-align: center;
 }
-
 
 .analysis-values div {
     display: flex;
@@ -238,42 +203,73 @@ tbody th {
     flex: 1;
 }
 
-
 .analysis-values span {
     font-size: 18px;
 }
-
 
 .analysis-values strong {
     font-size: 26px;
 }
 
-
 /* =================================
    攻撃・防御 切り替えタブ
    ================================= */
-
 .role-tabs {
-    position: absolute;
-    left: 15px;
-    bottom: 15px;
     width: 300px;
     display: flex;
     gap: 4px;
+    margin-top: -1px;
 }
 
 .role-tab {
     flex: 1;
     height: 38px;
-    border: 1px solid #aaa;
+    border: 2px solid transparent;
+    border-top: 0;
     background-color: #eee;
     font-size: 17px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 5px 5px 0 0;
+    border-radius: 0 0 5px 5px;
 }
 
-.role-tab.active {
+.attack-tab {
+    background-color: #fde7e7;
+    color: #b44;
+}
+
+.defense-tab {
+    background-color: #e7f0fd;
+    color: #357;
+}
+
+.role-tab.active.attack-tab {
+    border-color: #ef6b6b;
+    border-top: 0;
     background-color: #fff;
-    border-bottom: 3px solid #69c;
+}
+
+.role-tab.active.defense-tab {
+    border-color: #5f9bd3;
+    border-top: 0;
+    background-color: #fff;
+}
+
+@media (max-width: 800px) {
+    body {
+        margin: 15px auto;
+        padding: 10px;
+    }
+
+    h1 {
+        margin-bottom: 25px;
+    }
+
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+
+    .role-tabs {
+        width: 100%;
+    }
 }
