@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
 <h1>ダメージ計算ツール</h1>
 
 <div class="tool-wrapper">
@@ -93,44 +92,31 @@
 
             </div>
 
-
             <div class="damage-area">
-
                 <table class="damage-table">
                     <thead>
                         <tr>
                             <th colspan="2" rowspan="2"></th>
                             <th colspan="6">防御</th>
                         </tr>
-
                         <tr>
-                            <th>1</th>
-                            <th>2</th>
-                            <th>3</th>
-                            <th>4</th>
-                            <th>5</th>
-                            <th>6</th>
+                            <th>1</th><th>2</th><th>3</th>
+                            <th>4</th><th>5</th><th>6</th>
                         </tr>
                     </thead>
-
                     <tbody></tbody>
                 </table>
 
-
                 <div class="analysis-values">
-
                     <div>
                         <span>期待値</span>
                         <strong class="expected-damage">-</strong>
                     </div>
-
                     <div>
                         <span>撃破率</span>
                         <strong class="result-rate">-</strong>
                     </div>
-
                 </div>
-
             </div>
 
         </div>
@@ -214,15 +200,46 @@
 
             </div>
 
-
             <div class="damage-area">
-
                 <table class="damage-table">
                     <thead>
                         <tr>
                             <th colspan="2" rowspan="2"></th>
                             <th colspan="6">防御</th>
                         </tr>
-
                         <tr>
-                            <th>1</th>
+                            <th>1</th><th>2</th><th>3</th>
+                            <th>4</th><th>5</th><th>6</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <div class="analysis-values">
+                    <div>
+                        <span>期待値</span>
+                        <strong class="expected-damage">-</strong>
+                    </div>
+                    <div>
+                        <span>生存率</span>
+                        <strong class="result-rate">-</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 左下の切り替えタブ -->
+    <div class="role-tabs">
+        <button type="button" class="role-tab active attack-tab" data-role="attack">攻撃</button>
+        <button type="button" class="role-tab defense-tab" data-role="defense">防御</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
