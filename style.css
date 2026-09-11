@@ -21,7 +21,7 @@ h1 {
 .main-container {
     display: grid;
     grid-template-columns: 300px 1fr;
-    gap: 40px;
+    gap: 30px;
     align-items: start;
     border: 1px solid #aaa;
     padding: 20px;
