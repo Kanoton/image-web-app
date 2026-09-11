@@ -20,13 +20,12 @@ h1 {
 
 .main-container {
     display: grid;
-
-    /* 左：パラメータ　右：ダメージ表 */
     grid-template-columns: 300px 1fr;
-
     gap: 40px;
-
     align-items: start;
+    border: 1px solid #aaa;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 
