@@ -18,8 +18,9 @@
         <div class="mode-content active" data-role="attack">
 
             <div class="parameter-area">
+            
                 <section class="attack-panel">
-
+            
                     <label>
                         <img src="images/icon/Attack.png" alt="攻撃" class="parameter-icon">
                         <div class="number-control">
@@ -28,10 +29,12 @@
                             <button type="button" class="plus-button" data-target="attackPower1">＋</button>
                         </div>
                     </label>
+            
                 </section>
-
+            
+            
                 <section class="defense-panel">
-
+            
                     <label>
                         <img src="images/icon/Hp.png" alt="HP" class="parameter-icon">
                         <div class="number-control">
@@ -40,7 +43,7 @@
                             <button type="button" class="plus-button" data-target="hp1">＋</button>
                         </div>
                     </label>
-
+            
                     <label>
                         <img src="images/icon/Defense.png" alt="防御" class="parameter-icon">
                         <div class="number-control">
@@ -49,10 +52,12 @@
                             <button type="button" class="plus-button" data-target="defensePower1">＋</button>
                         </div>
                     </label>
+            
                 </section>
-
-
+            
+            
                 <section class="effect-panel">
+            
                     <label>
                         増加
                         <div class="number-control">
@@ -61,6 +66,7 @@
                             <button type="button" class="plus-button" data-target="damageAdd1">＋</button>
                         </div>
                     </label>
+            
                     <label>
                         軽減
                         <div class="number-control">
@@ -69,7 +75,103 @@
                             <button type="button" class="plus-button" data-target="damageReduce1">＋</button>
                         </div>
                     </label>
+            
                 </section>
+            
+            </div>
+            <div class="damage-area">
+                <table class="damage-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2" rowspan="2"></th>
+                            <th colspan="6">防御</th>
+                        </tr>
+                        <tr>
+                            <th>1</th><th>2</th><th>3</th>
+                            <th>4</th><th>5</th><th>6</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <div class="analysis-values">
+                    <div>
+                        <span>期待値</span>
+                        <strong class="expected-damage">-</strong>
+                    </div>
+                    <div>
+                        <span>撃破率</span>
+                        <strong class="result-rate">-</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 防御側として計算するモード -->
+        <div class="mode-content" data-role="defense">
+
+            <div class="parameter-area">
+            
+                <section class="attack-panel">
+            
+                    <label>
+                        <img src="images/icon/Attack.png" alt="攻撃" class="parameter-icon">
+                        <div class="number-control">
+                            <button type="button" class="minus-button" data-target="attackPower2">−</button>
+                            <input type="number" id="attackPower2" value="1" min="0">
+                            <button type="button" class="plus-button" data-target="attackPower2">＋</button>
+                        </div>
+                    </label>
+            
+                </section>
+            
+            
+                <section class="defense-panel">
+            
+                    <label>
+                        <img src="images/icon/Hp.png" alt="HP" class="parameter-icon">
+                        <div class="number-control">
+                            <button type="button" class="minus-button" data-target="hp2">−</button>
+                            <input type="number" id="hp2" value="5" min="0">
+                            <button type="button" class="plus-button" data-target="hp2">＋</button>
+                        </div>
+                    </label>
+            
+                    <label>
+                        <img src="images/icon/Defense.png" alt="防御" class="parameter-icon">
+                        <div class="number-control">
+                            <button type="button" class="minus-button" data-target="defensePower2">−</button>
+                            <input type="number" id="defensePower2" value="1" min="0">
+                            <button type="button" class="plus-button" data-target="defensePower2">＋</button>
+                        </div>
+                    </label>
+            
+                </section>
+            
+            
+                <section class="effect-panel">
+            
+                    <label>
+                        増加
+                        <div class="number-control">
+                            <button type="button" class="minus-button" data-target="damageAdd2">−</button>
+                            <input type="number" id="damageAdd2" value="0" min="0">
+                            <button type="button" class="plus-button" data-target="damageAdd2">＋</button>
+                        </div>
+                    </label>
+            
+                    <label>
+                        軽減
+                        <div class="number-control">
+                            <button type="button" class="minus-button" data-target="damageReduce2">−</button>
+                            <input type="number" id="damageReduce2" value="0" min="0">
+                            <button type="button" class="plus-button" data-target="damageReduce2">＋</button>
+                        </div>
+                    </label>
+            
+                </section>
+            
             </div>
 
             <div class="damage-area">
