@@ -305,7 +305,7 @@ tbody th {
    height = アイコンの最大高さ */
 .parameter-icon {
     width: 52px;
-    height: 46px;
+    height: 42px;
     object-fit: contain;
     flex-shrink: 0;
 }
@@ -314,6 +314,7 @@ tbody th {
 /* 攻撃の赤い枠 */
 .parameter-input-area .attack-panel {
     padding: 10px 12px;
+    gap: 6px;
 }
 
 
