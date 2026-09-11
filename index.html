@@ -4,217 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ダメージ計算ツール</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <h1>ダメージ計算ツール</h1>
 
-<!-- 1つ目の計算ツール -->
-<div class="main-container calculator">
+<div class="main-container">
 
-    <!-- 左側：パラメータ -->
-    <div class="parameter-area">
+    <!-- 攻撃側として計算するモード -->
+    <div class="mode-content active" data-role="attack">
 
-        <section class="attack-panel">
-            <h2>攻撃側のパラメータ</h2>
+        <div class="parameter-area">
+            <section class="attack-panel">
+                <h2>攻撃側</h2>
 
-            <label>
-                攻撃
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="attackPower1">−</button>
-                    <input type="number" id="attackPower1" value="1" min="0">
-                    <button type="button" class="plus-button" data-target="attackPower1">＋</button>
+                <label>
+                    攻撃
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="attackPower1">−</button>
+                        <input type="number" id="attackPower1" value="1" min="0">
+                        <button type="button" class="plus-button" data-target="attackPower1">＋</button>
+                    </div>
+                </label>
+
+                <label>
+                    加算
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="damageAdd1">−</button>
+                        <input type="number" id="damageAdd1" value="0" min="0">
+                        <button type="button" class="plus-button" data-target="damageAdd1">＋</button>
+                    </div>
+                </label>
+            </section>
+
+            <section class="defense-panel">
+                <h2>防御側</h2>
+
+                <label>
+                    HP
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="hp1">−</button>
+                        <input type="number" id="hp1" value="5" min="0">
+                        <button type="button" class="plus-button" data-target="hp1">＋</button>
+                    </div>
+                </label>
+
+                <label>
+                    防御
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="defensePower1">−</button>
+                        <input type="number" id="defensePower1" value="1" min="0">
+                        <button type="button" class="plus-button" data-target="defensePower1">＋</button>
+                    </div>
+                </label>
+
+                <label>
+                    軽減
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="damageReduce1">−</button>
+                        <input type="number" id="damageReduce1" value="0" min="0">
+                        <button type="button" class="plus-button" data-target="damageReduce1">＋</button>
+                    </div>
+                </label>
+            </section>
+        </div>
+
+        <div class="damage-area">
+            <table class="damage-table">
+                <thead>
+                    <tr>
+                        <th colspan="2" rowspan="2"></th>
+                        <th colspan="6">防御</th>
+                    </tr>
+                    <tr>
+                        <th>1</th><th>2</th><th>3</th>
+                        <th>4</th><th>5</th><th>6</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="analysis-values">
+                <div>
+                    <span>期待値</span>
+                    <strong class="expected-damage">-</strong>
                 </div>
-            </label>
-
-            <label>
-                加算
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="damageAdd1">−</button>
-                    <input type="number" id="damageAdd1" value="0" min="0">
-                    <button type="button" class="plus-button" data-target="damageAdd1">＋</button>
+                <div>
+                    <span>撃破率</span>
+                    <strong class="result-rate">-</strong>
                 </div>
-            </label>
-        </section>
-
-        <section class="defense-panel">
-            <h2>防御側のパラメータ</h2>
-
-            <label>
-                HP
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="hp1">−</button>
-                    <input type="number" id="hp1" value="5" min="0">
-                    <button type="button" class="plus-button" data-target="hp1">＋</button>
-                </div>
-            </label>
-
-            <label>
-                防御
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="defensePower1">−</button>
-                    <input type="number" id="defensePower1" value="1" min="0">
-                    <button type="button" class="plus-button" data-target="defensePower1">＋</button>
-                </div>
-            </label>
-
-            <label>
-                軽減
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="damageReduce1">−</button>
-                    <input type="number" id="damageReduce1" value="0" min="0">
-                    <button type="button" class="plus-button" data-target="damageReduce1">＋</button>
-                </div>
-            </label>
-        </section>
-
-    </div>
-
-    <!-- 右側：ダメージ表 -->
-    <div class="damage-area">
-
-        <table class="damage-table">
-            <thead>
-                <tr>
-                    <th colspan="2" rowspan="2"></th>
-                    <th colspan="6">防御</th>
-                </tr>
-
-                <tr>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            </tbody>
-        </table>
-
-        <div class="analysis-values">
-            <div>
-                <span>期待値</span>
-                <strong class="expected-damage">-</strong>
-            </div>
-
-            <div>
-                <span>撃破率</span>
-                <strong class="defeat-rate">-</strong>
             </div>
         </div>
 
     </div>
 
-</div>
 
+    <!-- 防御側として計算するモード -->
+    <div class="mode-content" data-role="defense">
 
-<!-- 2つ目の計算ツール（現時点では1つ目と同じデータ） -->
-<div class="main-container calculator defense-calculator">
+        <div class="parameter-area">
+            <section class="attack-panel">
+                <h2>攻撃側</h2>
 
-    <!-- 左側：パラメータ -->
-    <div class="parameter-area">
+                <label>
+                    攻撃
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="attackPower2">−</button>
+                        <input type="number" id="attackPower2" value="1" min="0">
+                        <button type="button" class="plus-button" data-target="attackPower2">＋</button>
+                    </div>
+                </label>
 
-        <section class="attack-panel">
-            <h2>攻撃側</h2>
+                <label>
+                    加算
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="damageAdd2">−</button>
+                        <input type="number" id="damageAdd2" value="0" min="0">
+                        <button type="button" class="plus-button" data-target="damageAdd2">＋</button>
+                    </div>
+                </label>
+            </section>
 
-            <label>
-                攻撃
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="attackPower2">−</button>
-                    <input type="number" id="attackPower2" value="1" min="0">
-                    <button type="button" class="plus-button" data-target="attackPower2">＋</button>
+            <section class="defense-panel">
+                <h2>防御側</h2>
+
+                <label>
+                    HP
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="hp2">−</button>
+                        <input type="number" id="hp2" value="5" min="0">
+                        <button type="button" class="plus-button" data-target="hp2">＋</button>
+                    </div>
+                </label>
+
+                <label>
+                    防御
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="defensePower2">−</button>
+                        <input type="number" id="defensePower2" value="1" min="0">
+                        <button type="button" class="plus-button" data-target="defensePower2">＋</button>
+                    </div>
+                </label>
+
+                <label>
+                    軽減
+                    <div class="number-control">
+                        <button type="button" class="minus-button" data-target="damageReduce2">−</button>
+                        <input type="number" id="damageReduce2" value="0" min="0">
+                        <button type="button" class="plus-button" data-target="damageReduce2">＋</button>
+                    </div>
+                </label>
+            </section>
+        </div>
+
+        <div class="damage-area">
+            <table class="damage-table">
+                <thead>
+                    <tr>
+                        <th colspan="2" rowspan="2"></th>
+                        <th colspan="6">防御</th>
+                    </tr>
+                    <tr>
+                        <th>1</th><th>2</th><th>3</th>
+                        <th>4</th><th>5</th><th>6</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="analysis-values">
+                <div>
+                    <span>期待値</span>
+                    <strong class="expected-damage">-</strong>
                 </div>
-            </label>
-
-            <label>
-                加算
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="damageAdd2">−</button>
-                    <input type="number" id="damageAdd2" value="0" min="0">
-                    <button type="button" class="plus-button" data-target="damageAdd2">＋</button>
+                <div>
+                    <span>生存率</span>
+                    <strong class="result-rate">-</strong>
                 </div>
-            </label>
-        </section>
-
-        <section class="defense-panel">
-            <h2>防御側</h2>
-
-            <label>
-                HP
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="hp2">−</button>
-                    <input type="number" id="hp2" value="5" min="0">
-                    <button type="button" class="plus-button" data-target="hp2">＋</button>
-                </div>
-            </label>
-
-            <label>
-                防御
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="defensePower2">−</button>
-                    <input type="number" id="defensePower2" value="1" min="0">
-                    <button type="button" class="plus-button" data-target="defensePower2">＋</button>
-                </div>
-            </label>
-
-            <label>
-                軽減
-                <div class="number-control">
-                    <button type="button" class="minus-button" data-target="damageReduce2">−</button>
-                    <input type="number" id="damageReduce2" value="0" min="0">
-                    <button type="button" class="plus-button" data-target="damageReduce2">＋</button>
-                </div>
-            </label>
-        </section>
-
-    </div>
-
-    <!-- 右側：ダメージ表 -->
-    <div class="damage-area">
-
-        <table class="damage-table">
-            <thead>
-                <tr>
-                    <th colspan="2" rowspan="2"></th>
-                    <th colspan="6">防御</th>
-                </tr>
-
-                <tr>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            </tbody>
-        </table>
-
-        <div class="analysis-values">
-            <div>
-                <span>期待値</span>
-                <strong class="expected-damage">-</strong>
-            </div>
-
-            <div>
-                <span>生存率</span>
-                <strong class="defeat-rate">-</strong>
             </div>
         </div>
 
+    </div>
+
+
+    <!-- 左下の切り替えタブ -->
+    <div class="role-tabs">
+        <button type="button" class="role-tab active" data-role="attack">攻撃</button>
+        <button type="button" class="role-tab" data-role="defense">防御</button>
     </div>
 
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>

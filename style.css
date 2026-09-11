@@ -19,19 +19,26 @@ h1 {
    ================================= */
 
 .main-container {
+    position: relative;
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 25px;
     align-items: start;
     border: 1px solid #aaa;
     padding: 15px;
+    padding-bottom: 65px;
     box-sizing: border-box;
 }
 
-/* 2つの計算ツールの間隔 */
 
-.calculator + .calculator {
-    margin-top: 20px;
+/* モード切り替え */
+
+.mode-content {
+    display: contents;
+}
+
+.mode-content:not(.active) {
+    display: none;
 }
 
 
@@ -204,15 +211,9 @@ tbody th {
     background-color: #ffd9a8;
 }
 
-/* 下段：生存可能なダメージ */
-
-.survival {
-    background-color: #ffd9a8;
-}
-
 
 /* =================================
-   期待値・撃破確率
+   期待値・確率
    ================================= */
 
 .analysis-values {
@@ -245,4 +246,34 @@ tbody th {
 
 .analysis-values strong {
     font-size: 26px;
+}
+
+
+/* =================================
+   攻撃・防御 切り替えタブ
+   ================================= */
+
+.role-tabs {
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+    width: 300px;
+    display: flex;
+    gap: 4px;
+}
+
+.role-tab {
+    flex: 1;
+    height: 38px;
+    border: 1px solid #aaa;
+    background-color: #eee;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+}
+
+.role-tab.active {
+    background-color: #fff;
+    border-bottom: 3px solid #69c;
 }
