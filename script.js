@@ -1,4 +1,4 @@
-function calculateDamage(calculator) {
+function calculateDamage(calculator, isSurvival = false) {
 
     // 入力された値を取得する
     const attackPower =
@@ -31,9 +31,8 @@ function calculateDamage(calculator) {
     // 撃破できる組み合わせ数
     let defeatCount = 0;
 
-    // 下段の防御側計算では、生存できる組み合わせ数を数える
+    // 生存できる組み合わせ数
     let survivalCount = 0;
-    const isDefenseCalculator = calculator.classList.contains("defense-calculator");
 
     // ダイスの組み合わせ数
     const totalCombinations = 36;
@@ -101,15 +100,13 @@ function calculateDamage(calculator) {
             cell.textContent = finalDamage;
 
 
-            // 上段はHP以上で撃破可能、下段はHP未満で生存可能として色を付ける
-            if (isDefenseCalculator) {
-                if (finalDamage < hp) {
-                    cell.classList.add("survival");
-                }
+            // HP以上なら撃破可能として色を付ける
+            // 上段・下段ともに色付け条件は同じ
+            if (finalDamage >= hp) {
+                cell.classList.add("defeat");
+                defeatCount++;
             } else {
-                if (finalDamage >= hp) {
-                    cell.classList.add("defeat");
-                }
+                survivalCount++;
             }
 
             row.appendChild(cell);
@@ -117,15 +114,6 @@ function calculateDamage(calculator) {
 
             // 期待値計算用にダメージを加算
             totalDamage += finalDamage;
-
-
-            // HP以上なら撃破、HP未満なら生存
-            if (finalDamage >= hp) {
-                defeatCount++;
-            }
-            if (finalDamage < hp) {
-                survivalCount++;
-            }
         }
 
 
@@ -139,45 +127,74 @@ function calculateDamage(calculator) {
         totalDamage / totalCombinations;
 
 
-    // 上段は撃破率、下段は生存率
-    const resultRate = isDefenseCalculator
-        ? (survivalCount / totalCombinations) * 100
-        : (defeatCount / totalCombinations) * 100;
-
-
     // 結果を表示
     calculator.querySelector(".expected-damage").textContent =
         expectedDamage.toFixed(2);
 
-    calculator.querySelector(".defeat-rate").textContent =
-        resultRate.toFixed(2) + "%";
+
+    if (isSurvival) {
+
+        // 下段：ダメージがHP未満となる確率
+        const survivalRate =
+            (survivalCount / totalCombinations) * 100;
+
+        calculator.querySelector(".defeat-rate").textContent =
+            survivalRate.toFixed(2) + "%";
+
+        calculator.querySelector(".defeat-rate")
+            .previousElementSibling.textContent = "生存率";
+
+    } else {
+
+        // 上段：ダメージがHP以上となる確率
+        const defeatRate =
+            (defeatCount / totalCombinations) * 100;
+
+        calculator.querySelector(".defeat-rate").textContent =
+            defeatRate.toFixed(2) + "%";
+
+        calculator.querySelector(".defeat-rate")
+            .previousElementSibling.textContent = "撃破率";
+    }
 }
 
 
 // 各計算ツールを初期化
-document.querySelectorAll(".calculator").forEach(calculator => {
+document.querySelectorAll(".calculator").forEach((calculator, index) => {
+
+    // 2つ目の計算ツールだけ生存率として計算する
+    const isSurvival = index === 1;
 
     // 入力値が変更されたら自動的に計算する
     calculator.querySelectorAll('input[type="number"]').forEach(input => {
-        input.addEventListener("input", () => calculateDamage(calculator));
+        input.addEventListener("input", () => {
+            calculateDamage(calculator, isSurvival);
+        });
     });
+
 
     // ＋ボタンで入力値を変更する
     calculator.querySelectorAll(".plus-button").forEach(button => {
         button.addEventListener("click", () => {
-            const input = document.getElementById(button.dataset.target);
+
+            const input =
+                document.getElementById(button.dataset.target);
 
             input.value = Number(input.value) + 1;
             input.dispatchEvent(new Event("input"));
         });
     });
 
+
     // −ボタンで入力値を変更する
     calculator.querySelectorAll(".minus-button").forEach(button => {
         button.addEventListener("click", () => {
-            const input = document.getElementById(button.dataset.target);
 
-            const newValue = Number(input.value) - 1;
+            const input =
+                document.getElementById(button.dataset.target);
+
+            const newValue =
+                Number(input.value) - 1;
 
             if (newValue >= 0) {
                 input.value = newValue;
@@ -186,6 +203,7 @@ document.querySelectorAll(".calculator").forEach(calculator => {
         });
     });
 
+
     // ページを開いたときにも計算する
-    calculateDamage(calculator);
+    calculateDamage(calculator, isSurvival);
 });
