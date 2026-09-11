@@ -21,7 +21,7 @@ h1 {
 .main-container {
     display: grid;
     grid-template-columns: 300px 1fr;
-    gap: 30px;
+    gap: 25px;
     align-items: start;
     border: 1px solid #aaa;
     padding: 15px;
@@ -36,7 +36,7 @@ h1 {
 .parameter-area {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
 }
 
 
@@ -45,7 +45,7 @@ h1 {
 .attack-panel {
     background-color: #fde7e7;
     border-left: 8px solid #e88;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
 }
 
@@ -55,7 +55,7 @@ h1 {
 .defense-panel {
     background-color: #e7f0fd;
     border-left: 8px solid #69c;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
 }
 
@@ -194,21 +194,13 @@ tbody th {
 
 .analysis-values {
     display: flex;
-
     justify-content: space-around;
-
     align-items: center;
-
-    margin-top: 20px;
-
+    margin-top: 15px;
     padding: 15px;
-
     background-color: #eefaf7;
-
     border: 2px solid #9dd;
-
     border-radius: 8px;
-
     text-align: center;
 }
 
