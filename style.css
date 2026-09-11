@@ -279,3 +279,64 @@ tbody th {
         width: 100%;
     }
 }
+
+/* =================================
+   パラメータ入力欄のレイアウト調整※いったん下に置いている
+   ================================= */
+
+/* 見出しの余白をコンパクトにする */
+.parameter-input-area h2,
+.effect-input-area h2 {
+    margin: 0 0 14px;
+}
+
+
+/* パラメータ入力内の各行 */
+.parameter-input-area label {
+    justify-content: center;
+    margin: 0;
+    gap: 10px;
+    min-height: 44px;
+}
+
+
+/* アイコン用の共通サイズ
+   画像の縦横比は維持する */
+.parameter-icon {
+    width: 52px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* 攻撃側の色付きエリア */
+.parameter-input-area .attack-panel {
+    padding: 8px 12px;
+}
+
+
+/* 防御側の色付きエリア */
+.parameter-input-area .defense-panel {
+    padding: 8px 12px;
+}
+
+
+/* HP・防御の行間 */
+.parameter-input-area .defense-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+/* パラメータ入力と効果による変動の間隔 */
+.parameter-area {
+    gap: 14px;
+}
+
+
+/* 効果による変動 */
+.effect-panel label {
+    margin: 8px 0;
+}
