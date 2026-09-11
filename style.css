@@ -187,7 +187,8 @@ tbody th {
     align-items: center;
     width: 100%;
     margin-top: 15px;
-    padding: 12px;
+    height: 55px;
+    padding: 6px 12px;
     background-color: #eefaf7;
     border: 2px solid #9dd;
     border-radius: 8px;
@@ -204,11 +205,11 @@ tbody th {
 }
 
 .analysis-values span {
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .analysis-values strong {
-    font-size: 26px;
+    font-size: 24px;
 }
 
 /* =================================
@@ -220,7 +221,7 @@ tbody th {
     display: flex;
     gap: 0;
     margin-top: 0;
-    margin-left: 1px;
+    margin-left: 18px;
     position: relative;
     z-index: 2;
 }
