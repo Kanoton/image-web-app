@@ -337,3 +337,8 @@ tbody th {
 .effect-panel label {
     margin: 10px 0;
 }
+
+.parameter-area {
+    padding-top: 0;
+    padding-bottom: 6px;
+}
