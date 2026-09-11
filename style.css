@@ -314,7 +314,6 @@ tbody th {
 /* 攻撃の赤い枠 */
 .parameter-input-area .attack-panel {
     padding: 10px 12px;
-    gap: 6px;
 }
 
 
@@ -324,6 +323,7 @@ tbody th {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    margin-top: 5px;
 }
 
 
