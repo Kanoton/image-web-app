@@ -216,11 +216,10 @@ tbody th {
 
 .analysis-values div {
     display: flex;
-
-    flex-direction: column;
-
-    gap: 5px;
-
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
     flex: 1;
 }
 
