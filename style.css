@@ -78,10 +78,7 @@ h1 {
 
 label {
     display: flex;
-
-    justify-content: space-between;
     align-items: center;
-
     margin: 15px 0;
 }
 
@@ -91,6 +88,7 @@ label {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-left: auto;
 }
 
 .number-control button {
