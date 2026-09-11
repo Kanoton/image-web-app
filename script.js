@@ -1,25 +1,25 @@
-function calculateDamage() {
+function calculateDamage(calculator) {
 
     // 入力された値を取得する
     const attackPower =
-        Number(document.getElementById("attackPower").value);
+        Number(calculator.querySelector('[id^="attackPower"]').value);
 
     const damageAdd =
-        Number(document.getElementById("damageAdd").value);
+        Number(calculator.querySelector('[id^="damageAdd"]').value);
 
     const hp =
-        Number(document.getElementById("hp").value);
+        Number(calculator.querySelector('[id^="hp"]').value);
 
     const defensePower =
-        Number(document.getElementById("defensePower").value);
+        Number(calculator.querySelector('[id^="defensePower"]').value);
 
     const damageReduce =
-        Number(document.getElementById("damageReduce").value);
+        Number(calculator.querySelector('[id^="damageReduce"]').value);
 
 
     // ダメージ表を取得
     const tableBody =
-        document.querySelector("#damageTable tbody");
+        calculator.querySelector(".damage-table tbody");
 
     // 表を一度空にする
     tableBody.innerHTML = "";
@@ -132,43 +132,46 @@ function calculateDamage() {
 
 
     // 結果を表示
-    document.getElementById("expectedDamage").textContent =
+    calculator.querySelector(".expected-damage").textContent =
         expectedDamage.toFixed(2);
 
-    document.getElementById("defeatRate").textContent =
+    calculator.querySelector(".defeat-rate").textContent =
         defeatRate.toFixed(2) + "%";
 }
 
 
-// 入力値が変更されたら自動的に計算する
-document.getElementById("attackPower").addEventListener("input", calculateDamage);
-document.getElementById("damageAdd").addEventListener("input", calculateDamage);
-document.getElementById("hp").addEventListener("input", calculateDamage);
-document.getElementById("defensePower").addEventListener("input", calculateDamage);
-document.getElementById("damageReduce").addEventListener("input", calculateDamage);
+// 各計算ツールを初期化
+document.querySelectorAll(".calculator").forEach(calculator => {
 
-// ＋・−ボタンで入力値を変更する
-document.querySelectorAll(".plus-button").forEach(button => {
-    button.addEventListener("click", () => {
-        const input = document.getElementById(button.dataset.target);
-
-        input.value = Number(input.value) + 1;
-        input.dispatchEvent(new Event("input"));
+    // 入力値が変更されたら自動的に計算する
+    calculator.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener("input", () => calculateDamage(calculator));
     });
-});
 
-document.querySelectorAll(".minus-button").forEach(button => {
-    button.addEventListener("click", () => {
-        const input = document.getElementById(button.dataset.target);
+    // ＋ボタンで入力値を変更する
+    calculator.querySelectorAll(".plus-button").forEach(button => {
+        button.addEventListener("click", () => {
+            const input = document.getElementById(button.dataset.target);
 
-        const newValue = Number(input.value) - 1;
-
-        if (newValue >= 0) {
-            input.value = newValue;
+            input.value = Number(input.value) + 1;
             input.dispatchEvent(new Event("input"));
-        }
+        });
     });
-});
 
-// ページを開いたときにも計算する
-calculateDamage();
+    // −ボタンで入力値を変更する
+    calculator.querySelectorAll(".minus-button").forEach(button => {
+        button.addEventListener("click", () => {
+            const input = document.getElementById(button.dataset.target);
+
+            const newValue = Number(input.value) - 1;
+
+            if (newValue >= 0) {
+                input.value = newValue;
+                input.dispatchEvent(new Event("input"));
+            }
+        });
+    });
+
+    // ページを開いたときにも計算する
+    calculateDamage(calculator);
+});

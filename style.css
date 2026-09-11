@@ -28,6 +28,12 @@ h1 {
     box-sizing: border-box;
 }
 
+/* 2つの計算ツールの間隔 */
+
+.calculator + .calculator {
+    margin-top: 20px;
+}
+
 
 /* =================================
    パラメータ
@@ -83,6 +89,7 @@ label {
     margin: 15px 0;
 }
 
+
 /* ＋・−ボタン付き数値入力 */
 
 .number-control {
@@ -108,7 +115,9 @@ label {
     text-align: center !important;
 }
 
+
 /* 数値入力欄の▲▼ボタンを非表示 */
+
 .number-control input::-webkit-inner-spin-button,
 .number-control input::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -122,6 +131,7 @@ label {
 .parameter-area label {
     font-size: 18px;
 }
+
 
 /* =================================
    ダメージ表
@@ -167,6 +177,7 @@ tbody th {
     background-color: #fde7e7;
 }
 
+
 /* 攻撃の縦見出し */
 
 .attack-label {
@@ -176,12 +187,14 @@ tbody th {
     background-color: #fde7e7;
 }
 
+
 /* 左上の結合セル */
 
-#damageTable thead tr:first-child th:first-child {
+.damage-table thead tr:first-child th:first-child {
     background-color: white;
     position: relative;
 }
+
 
 /* =================================
    撃破可能なダメージ
