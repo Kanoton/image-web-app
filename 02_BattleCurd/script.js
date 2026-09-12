@@ -19,9 +19,10 @@ function getDefenseDamage(
 
     let finalDamage = damage + damageAdd - damageReduce;
 
-    // 現在の仕様に合わせ、最終ダメージも最低1
-    if (finalDamage < 1) {
-        finalDamage = 1;
+    // 増加・軽減の計算後は0ダメージを許容する
+    // （負のダメージにはならないよう0を下限とする）
+    if (finalDamage < 0) {
+        finalDamage = 0;
     }
 
     return finalDamage;
@@ -55,8 +56,9 @@ function getEvadeDamage(
 
     let finalDamage = damage + damageAdd - damageReduce;
 
-    if (finalDamage < 1) {
-        finalDamage = 1;
+    // 増加・軽減の計算後は0ダメージを許容する
+    if (finalDamage < 0) {
+        finalDamage = 0;
     }
 
     return finalDamage;
@@ -149,8 +151,13 @@ function renderDamageProbabilityGraph(
         return;
     }
 
-    const xMin = 0;
-    const xMax = Math.max(1, maxDamage + 1);
+    // 横軸は「実際に発生する最小ダメージ」から開始し、
+    // 最大値は「最大ダメージ + 1」まで表示する
+    const damageValues = Array.from(damageCounts.keys());
+    const xMin = damageValues.length > 0
+        ? Math.min(...damageValues)
+        : 0;
+    const xMax = Math.max(xMin + 1, maxDamage + 1);
 
     const probabilities = [];
     let maxProbability = 0;
