@@ -606,15 +606,14 @@ function renderDamageProbabilityGraph(
 
     svgParts.push(
         `<title>ダメージ発生確率</title>`,
-        `<desc>折れ線より下側のうち、攻撃モードではHP以上、防御モードではHP未満の確率範囲を斜線で表示します。</desc>`
+        `<desc>折れ線より下側のうち、攻撃・防御の両モードでHP以上の確率範囲を斜線で表示します。</desc>`
     );
 
-    // 攻撃モード：HP以上 ＝ 撃破率
-    // 防御モード：HP未満 ＝ 生存率
+    // 攻撃・防御の両モード：HP以上の範囲を斜線で表示
     const isDefenseMode = calculator.dataset.role === "defense";
     const hatchColor = isDefenseMode ? "#5f9bd3" : "#ef6b6b";
     const hatchPatternId = isDefenseMode
-        ? "defense-survival-hatch"
+        ? "defense-defeat-hatch"
         : "attack-defeat-hatch";
     const probabilityClipId = isDefenseMode
         ? "defense-probability-area"
@@ -632,33 +631,16 @@ function renderDamageProbabilityGraph(
         </defs>`
     );
 
-    // HPを境に、表示する確率範囲だけを斜線で塗る
-    if (isDefenseMode) {
-        // 防御側：元の表示仕様に戻し、HP地点までを斜線範囲として描画する
-        if (hp > xMin) {
-            const hatchStartX = xToSvg(xMin);
-            const hatchEndDamage = Math.min(hp, xMax);
-            const hatchEndX = xToSvg(hatchEndDamage);
-            const hatchWidth = hatchEndX - hatchStartX;
+    // HPを境に、攻撃・防御の両モードで「ダメージ >= HP」の範囲を斜線で塗る
+    if (hp <= xMax) {
+        const hatchStartDamage = Math.max(hp, xMin);
+        const hatchStartX = xToSvg(hatchStartDamage);
+        const hatchWidth = margin.left + plotWidth - hatchStartX;
 
-            if (hatchWidth > 0) {
-                svgParts.push(
-                    `<rect x="${hatchStartX}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})" clip-path="url(#${probabilityClipId})"></rect>`
-                );
-            }
-        }
-    } else {
-        // 攻撃側は「ダメージ >= HP」が撃破なので、HPより右側を塗る
-        if (hp <= xMax) {
-            const hatchStartDamage = Math.max(hp, xMin);
-            const hatchStartX = xToSvg(hatchStartDamage);
-            const hatchWidth = margin.left + plotWidth - hatchStartX;
-
-            if (hatchWidth > 0) {
-                svgParts.push(
-                    `<rect x="${hatchStartX}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})" clip-path="url(#${probabilityClipId})"></rect>`
-                );
-            }
+        if (hatchWidth > 0) {
+            svgParts.push(
+                `<rect x="${hatchStartX}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})" clip-path="url(#${probabilityClipId})"></rect>`
+            );
         }
     }
 
