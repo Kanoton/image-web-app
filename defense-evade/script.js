@@ -130,7 +130,7 @@ function getDefenseRecommendation(
         evadeBetterDice.length === 1 &&
         evadeBetterDice[0] === 6
     ) {
-        return "出目6の場合回避";
+        return "出目6の場合、回避";
     }
 
     return "回避を選択";
