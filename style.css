@@ -1,3 +1,6 @@
+/* =================================
+   基本設定
+   ================================= */
 * {
     box-sizing: border-box;
 }
@@ -9,11 +12,11 @@ body {
     padding: 20px;
 }
 
-/* タイトル */
 h1 {
     text-align: center;
     margin: 0 0 40px;
 }
+
 
 /* =================================
    ツール全体
@@ -39,7 +42,10 @@ h1 {
     border-color: #5f9bd3;
 }
 
-/* モード切り替え */
+
+/* =================================
+   攻撃・防御モード切り替え
+   ================================= */
 .mode-content {
     display: contents;
 }
@@ -48,16 +54,62 @@ h1 {
     display: none;
 }
 
+
 /* =================================
-   パラメータ
+   左側：パラメータ入力エリア
    ================================= */
 .parameter-area {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     min-width: 0;
+    padding-top: 0;
+    padding-bottom: 6px;
 }
 
+/* 共通：入力行 */
+label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.parameter-area label {
+    font-size: 18px;
+}
+
+/* 見出し */
+.parameter-input-area h2,
+.effect-input-area h2 {
+    margin: 0 0 14px;
+}
+
+/* パラメータ入力内の各行
+   translateX の数値で、アイコン＋入力欄を左右に微調整 */
+.parameter-input-area label {
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    min-height: 48px;
+    transform: translateX(18px);
+}
+
+/* アイコン
+   width  = アイコン用の横幅
+   height = アイコンの最大高さ */
+.parameter-icon {
+    width: 52px;
+    height: 42px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* =================================
+   パラメータの色付きパネル
+   ================================= */
 .attack-panel {
     background-color: #fde7e7;
     border-left: 8px solid #e88;
@@ -82,14 +134,31 @@ h1 {
     margin: 0;
 }
 
-label {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    margin: 15px 0;
+/* パラメータ入力欄にある攻撃パネル */
+.parameter-input-area .attack-panel {
+    padding: 15px 12px;
 }
 
+/* パラメータ入力欄にあるHP・防御パネル
+   gap の数値で、防御とHPの行間を調整 */
+.parameter-input-area .defense-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 14px 12px;
+}
+
+/* 効果による変動：増加・軽減 */
+.effect-panel label {
+    margin: 10px 0;
+}
+
+
+/* =================================
+   数値入力コントロール
+   ================================= */
 .number-control {
     display: flex;
     align-items: center;
@@ -100,36 +169,30 @@ label {
 .number-control button {
     width: 32px;
     height: 32px;
+    padding: 0;
     font-size: 20px;
     font-weight: bold;
     line-height: 1;
-    padding: 0;
     cursor: pointer;
 }
 
 .number-control input {
     width: 70px;
     height: 32px;
-    box-sizing: border-box;
     text-align: center !important;
+    -moz-appearance: textfield;
 }
 
+/* number入力の標準スピンボタンを非表示 */
 .number-control input::-webkit-inner-spin-button,
 .number-control input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-.number-control input {
-    -moz-appearance: textfield;
-}
-
-.parameter-area label {
-    font-size: 18px;
-}
 
 /* =================================
-   ダメージ表
+   右側：ダメージ表
    ================================= */
 .damage-area {
     min-width: 0;
@@ -137,18 +200,18 @@ label {
 }
 
 table {
-    border-collapse: collapse;
     width: 100%;
+    border-collapse: collapse;
     table-layout: fixed;
 }
 
 th,
 td {
     border: 1px solid #aaa;
-    text-align: center;
     padding: 8px;
-    font-size: 18px;
     overflow: hidden;
+    text-align: center;
+    font-size: 18px;
 }
 
 thead th {
@@ -167,16 +230,15 @@ tbody th {
 }
 
 .damage-table thead tr:first-child th:first-child {
-    background-color: white;
     position: relative;
+    background-color: white;
 }
 
-/* =================================
-   撃破可能なダメージ
-   ================================= */
+/* 撃破可能なダメージ */
 .defeat {
     background-color: #ffd9a8;
 }
+
 
 /* =================================
    期待値・確率
@@ -186,8 +248,8 @@ tbody th {
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    margin-top: 15px;
     height: 50px;
+    margin-top: 15px;
     padding: 6px 12px;
     background-color: #eefaf7;
     border: 2px solid #9dd;
@@ -197,11 +259,11 @@ tbody th {
 
 .analysis-values div {
     display: flex;
+    flex: 1;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 15px;
-    flex: 1;
 }
 
 .analysis-values span {
@@ -212,18 +274,19 @@ tbody th {
     font-size: 22px;
 }
 
+
 /* =================================
    攻撃・防御 切り替えタブ
-   ※タブはメイン枠の外側・下部に配置
+   ※メイン枠の外側・下部に配置
    ================================= */
 .role-tabs {
-    width: 300px;
+    position: relative;
+    z-index: 2;
     display: flex;
+    width: 300px;
     gap: 0;
     margin-top: 0;
     margin-left: 3px;
-    position: relative;
-    z-index: 2;
 }
 
 .role-tab {
@@ -231,11 +294,11 @@ tbody th {
     height: 38px;
     border: 2px solid transparent;
     border-top: 0;
+    border-radius: 0 0 5px 5px;
     background-color: #eee;
     font-size: 17px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 0 0 5px 5px;
 }
 
 .attack-tab {
@@ -248,23 +311,27 @@ tbody th {
     color: #357;
 }
 
-/* 選択中のタブは、非選択時と同じ背景色を維持しつつ枠線だけ表示 */
+/* 選択中タブ：背景色は維持し、外周だけ強調 */
 .role-tab.active.attack-tab {
-    border-left-color: #ef6b6b;
+    border-top: 0;
     border-right-color: #ef6b6b;
     border-bottom-color: #ef6b6b;
-    border-top: 0;
+    border-left-color: #ef6b6b;
     background-color: #fde7e7;
 }
 
 .role-tab.active.defense-tab {
-    border-left-color: #5f9bd3;
+    border-top: 0;
     border-right-color: #5f9bd3;
     border-bottom-color: #5f9bd3;
-    border-top: 0;
+    border-left-color: #5f9bd3;
     background-color: #e7f0fd;
 }
 
+
+/* =================================
+   画面幅 800px 以下
+   ================================= */
 @media (max-width: 800px) {
     body {
         margin: 15px auto;
@@ -278,70 +345,4 @@ tbody th {
     .role-tabs {
         width: 100%;
     }
-}
-
-/* =================================
-   パラメータ入力欄のレイアウト調整※いったん下に置いている
-   ================================= */
-
-/* 見出し */
-.parameter-input-area h2,
-.effect-input-area h2 {
-    margin: 0 0 14px;
-}
-
-
-/* パラメータ入力内の各行 */
-.parameter-input-area label {
-    justify-content: center;
-    margin: 0;
-    gap: 10px;
-    min-height: 48px;
-}
-
-
-/* アイコン
-   width  = アイコンを置く横方向のスペース
-   height = アイコンの最大高さ */
-.parameter-icon {
-    width: 52px;
-    height: 42px;
-    object-fit: contain;
-    flex-shrink: 0;
-}
-
-
-/* 攻撃の赤い枠 */
-.parameter-input-area .attack-panel {
-    padding: 15px 12px;
-}
-
-
-/* HP・防御の青い枠 */
-.parameter-input-area .defense-panel {
-    padding: 14px 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 6px;
-    margin-top: 10px;
-}
-
-
-/* 「パラメータ入力」と「効果による変動」の間 */
-.parameter-area {
-    gap: 15px;
-    padding-top: 0;
-    padding-bottom: 6px;
-}
-
-
-/* 増加・軽減 */
-.effect-panel label {
-    margin: 10px 0;
-}
-
-/* パラメータ入力のアイコン＋数値入力を右へ移動 */
-.parameter-input-area label {
-    transform: translateX(18px);
 }
