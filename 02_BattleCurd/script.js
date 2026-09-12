@@ -405,17 +405,24 @@ function renderDamageProbabilityGraph(
         maxProbability = Math.max(maxProbability, probability);
     }
 
-    // 縦軸は5%の倍数から、見やすい目盛り間隔を自動選択する
-    // 1目盛りは 5% / 10% / 15% / 20% のいずれか
-    const yTickCandidates = [5, 10, 15, 20];
-    let yTickStep = 20;
+    // 縦軸：
+    // 最大発生確率が10%未満なら1%刻み。
+    // 10%以上なら5% / 10% / 15% / 20% から見やすい間隔を自動選択する。
+    let yTickStep;
 
-    for (const candidate of yTickCandidates) {
-        // 目盛り数が多すぎない範囲（おおむね4～6本）で最小の刻みを採用
-        const tickCount = Math.ceil(maxProbability / candidate);
-        if (tickCount <= 6) {
-            yTickStep = candidate;
-            break;
+    if (maxProbability < 10) {
+        yTickStep = 1;
+    } else {
+        const yTickCandidates = [5, 10, 15, 20];
+        yTickStep = 20;
+
+        for (const candidate of yTickCandidates) {
+            // 目盛り数が多すぎない範囲（おおむね4～6本）で最小の刻みを採用
+            const tickCount = Math.ceil(maxProbability / candidate);
+            if (tickCount <= 6) {
+                yTickStep = candidate;
+                break;
+            }
         }
     }
 
@@ -543,7 +550,21 @@ function renderDamageProbabilityGraph(
     }
 
     // 縦方向グリッドと横軸目盛り
-    for (let damage = xMin; damage <= xMax; damage++) {
+    // 最大値が25を超える場合は5刻み、それ以外は1刻み。
+    const xTickStep = xMax > 25 ? 5 : 1;
+
+    // 5刻み時は、表示範囲内にある最初の5の倍数から目盛りを開始する。
+    // 横軸そのものの最小値・最大値は従来どおり変えない。
+    const firstXTick =
+        xTickStep === 1
+            ? xMin
+            : Math.ceil(xMin / xTickStep) * xTickStep;
+
+    for (
+        let damage = firstXTick;
+        damage <= xMax;
+        damage += xTickStep
+    ) {
         const x = xToSvg(damage);
 
         svgParts.push(
