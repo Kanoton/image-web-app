@@ -638,11 +638,18 @@ tbody th {
     flex-direction: column;
     gap: 14px;
     min-width: 0;
+
+    /* 右側の「グラフ＋期待値」全体と下端をそろえる */
+    height: 330px;
 }
 
 .defense-choice-guide {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
     width: 510px;
-    padding: 10px 12px 12px;
+    min-height: 0;
+    padding: 11px 12px 12px;
     border: 2px solid #9fc3e6;
     border-radius: 8px;
     background: #f7fbff;
@@ -650,16 +657,19 @@ tbody th {
 
 .defense-choice-guide-title {
     margin-bottom: 8px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
+    line-height: 1.2;
     text-align: left;
     color: #357;
 }
 
 .defense-choice-grid {
     display: grid;
+    flex: 1 1 auto;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 6px;
+    align-items: stretch;
 }
 
 .defense-choice-cell {
@@ -668,31 +678,33 @@ tbody th {
     align-items: center;
     justify-content: center;
     min-width: 0;
-    padding: 6px 3px;
+    height: 100%;
+    padding: 7px 3px;
     border: 1px solid #b8c7d8;
     border-radius: 6px;
     background: #fff;
-    line-height: 1.15;
+    line-height: 1.2;
 }
 
 .defense-choice-die {
     width: 100%;
-    margin-bottom: 4px;
-    padding-bottom: 4px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
     border-bottom: 1px solid #d8e0e8;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
 }
 
 .defense-choice-cell strong {
-    margin-bottom: 4px;
-    font-size: 16px;
+    margin-bottom: 5px;
+    font-size: 17px;
 }
 
 .defense-choice-cell small {
     display: block;
-    font-size: 11px;
+    font-size: 12px;
+    line-height: 1.25;
     white-space: nowrap;
 }
 
