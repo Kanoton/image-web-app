@@ -132,7 +132,7 @@ function getDefenseRecommendation(
         evadeBetterDice.length === 1 &&
         evadeBetterDice[0] === 6
     ) {
-        return "攻撃ダイスが６なら回避";
+        return "出目6の場合、回避";
     }
 
     return "回避を選択";
@@ -622,11 +622,12 @@ function renderDamageProbabilityGraph(
 
     // HPを境に、表示する確率範囲だけを斜線で塗る
     if (isDefenseMode) {
-        // 防御側：塗りつぶし範囲を反転し、HP以上（右側）を塗る
-        if (hp <= xMax) {
-            const hatchStartDamage = Math.max(hp, xMin);
-            const hatchStartX = xToSvg(hatchStartDamage);
-            const hatchWidth = margin.left + plotWidth - hatchStartX;
+        // 防御側：生存条件は「ダメージ < HP」なので、HPより左側を塗る
+        if (hp > xMin) {
+            const hatchStartX = xToSvg(xMin);
+            const hatchEndDamage = Math.min(hp, xMax);
+            const hatchEndX = xToSvg(hatchEndDamage);
+            const hatchWidth = hatchEndX - hatchStartX;
 
             if (hatchWidth > 0) {
                 svgParts.push(
