@@ -420,48 +420,22 @@ tbody th {
    バトルカード
    ================================= */
 
+/* カードエリア全体
+   4列で配置し、上部に区切りの破線を表示 */
 .battle-card-area {
     grid-column: 1 / -1;
-
     display: grid;
     grid-template-columns: repeat(4, 120px);
-    gap: 10px;
-
     justify-content: start;
+    gap: 10px;
 
     width: 100%;
     margin-top: 5px;
-    padding-top: 10px;
-}
-
-.battle-card {
-    width: 120px;
-    height: auto;
-    display: block;
-
-    border: 5px solid #ef6b6b;
-    border-radius: 10px;
-}
-
-/* =================================
-   バトルカード：攻撃・防御の装飾
-   ================================= */
-
-/* 防御側カードだけ青枠にする */
-.defense-card-area .battle-card {
-    border-color: #5f9bd3;
-}
-
-/* カードエリア上部の破線 */
-.battle-card-area {
-    border-top: 2px dashed #aaa;
     padding-top: 20px;
+    border-top: 2px dashed #aaa;
 }
 
-/* =================================
-   バトルカードのカウンタ
-   ================================= */
-
+/* カード1枚分：画像＋カウンタ */
 .battle-card-item {
     display: flex;
     flex-direction: column;
@@ -469,16 +443,30 @@ tbody th {
     gap: 8px;
 }
 
+/* カード画像 共通 */
+.battle-card {
+    display: block;
+    width: 120px;
+    height: auto;
+    border: 5px solid #ef6b6b;
+    border-radius: 10px;
+}
+
+/* 防御側カードのみ青枠 */
+.defense-card-area .battle-card {
+    border-color: #5f9bd3;
+}
+
+/* カード下のカウンタ全体 */
 .battle-card-counter {
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: 120px;
     gap: 4px;
 }
 
-/* カード下の－＋ボタンだけ小さくする */
+/* カード下の－＋ボタン */
 .battle-card-counter button {
     width: 26px;
     height: 32px;
@@ -486,7 +474,7 @@ tbody th {
     flex-shrink: 0;
 }
 
-/* カード下の数値入力欄だけ細くする */
+/* カード下の数値入力欄 */
 .battle-card-counter input {
     width: 52px;
     height: 32px;
