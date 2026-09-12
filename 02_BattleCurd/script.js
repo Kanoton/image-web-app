@@ -190,11 +190,13 @@ function renderDamageProbabilityGraph(
     );
 
     const width = 620;
-    const height = 250;
+    // 右側の表示エリアに近い縦横比にして、
+    // SVG内部の上下の空白を減らす
+    const height = 325;
     const margin = {
         top: 2,
         right: 14,
-        bottom: 22,
+        bottom: 26,
         left: 50
     };
 
@@ -252,6 +254,7 @@ function renderDamageProbabilityGraph(
     );
 
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
     svg.innerHTML = svgParts.join("");
 }
 
