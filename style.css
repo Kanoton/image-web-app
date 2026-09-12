@@ -342,5 +342,5 @@ tbody th {
 
 /* パラメータ入力のアイコン＋数値入力を右へ移動 */
 .parameter-input-area label {
-    transform: translateX(15px);
+    transform: translateX(18px);
 }
