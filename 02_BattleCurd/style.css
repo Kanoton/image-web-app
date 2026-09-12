@@ -553,3 +553,48 @@ tbody th {
         height: 280px;
     }
 }
+
+
+/* =================================
+   バトルカード右側：グラフ＋分析結果
+   ================================= */
+.battle-result-area {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    height: 330px;
+    gap: 10px;
+}
+
+/* グラフ上端をカード画像の上端に合わせる */
+.battle-result-area .damage-graph-area {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+}
+
+/* 分析結果はグラフ下の空きスペースへ配置 */
+.battle-result-area .analysis-values {
+    flex: 0 0 50px;
+    height: 50px;
+    margin-top: 0;
+}
+
+/* 軸の数値を少し大きく */
+.damage-probability-graph .graph-label {
+    font-size: 15px;
+}
+
+@media (max-width: 900px) {
+    .battle-result-area {
+        height: auto;
+        gap: 10px;
+    }
+
+    .battle-result-area .damage-graph-area {
+        height: 260px;
+        flex: 0 0 260px;
+    }
+}

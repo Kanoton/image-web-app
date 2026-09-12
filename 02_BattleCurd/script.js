@@ -174,12 +174,12 @@ function renderDamageProbabilityGraph(
     const yMax = Math.max(10, Math.ceil(maxProbability / 10) * 10);
 
     const width = 620;
-    const height = 320;
+    const height = 270;
     const margin = {
-        top: 18,
-        right: 18,
-        bottom: 48,
-        left: 58
+        top: 8,
+        right: 14,
+        bottom: 30,
+        left: 50
     };
 
     const plotWidth = width - margin.left - margin.right;
@@ -233,12 +233,6 @@ function renderDamageProbabilityGraph(
 
     svgParts.push(
         `<polyline class="graph-line" points="${points}"></polyline>`
-    );
-
-    // 軸タイトル
-    svgParts.push(
-        `<text class="graph-axis-title" x="${margin.left + plotWidth / 2}" y="${height - 8}" text-anchor="middle">ダメージ</text>`,
-        `<text class="graph-axis-title" transform="translate(16 ${margin.top + plotHeight / 2}) rotate(-90)" text-anchor="middle">発生確率</text>`
     );
 
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
