@@ -287,6 +287,131 @@ function getDefensePowerDistribution(calculator, baseDefensePower) {
 }
 
 
+// 防御側：防御カードを考慮し、攻撃出目ごとの「防御 / 回避」を比較
+function getCardAwareDefenseChoices(
+    calculator,
+    attackPower,
+    defensePower,
+    damageAdd,
+    damageReduce,
+    hp
+) {
+    const defensePowerDistribution =
+        getDefensePowerDistribution(calculator, defensePower);
+
+    const choices = [];
+    const epsilon = 1e-10;
+
+    for (let attackDice = 1; attackDice <= 6; attackDice++) {
+        let defenseSurvivalProbability = 0;
+        let evadeSurvivalProbability = 0;
+
+        for (
+            const [cardDefensePower, cardProbability]
+            of defensePowerDistribution
+        ) {
+            for (let defenseDice = 1; defenseDice <= 6; defenseDice++) {
+                const diceProbability = cardProbability / 6;
+
+                const defenseDamage = getDefenseDamage(
+                    attackPower,
+                    cardDefensePower,
+                    damageAdd,
+                    damageReduce,
+                    attackDice,
+                    defenseDice
+                );
+
+                const evadeDamage = getEvadeDamage(
+                    attackPower,
+                    damageAdd,
+                    damageReduce,
+                    attackDice,
+                    defenseDice
+                );
+
+                if (defenseDamage < hp) {
+                    defenseSurvivalProbability += diceProbability;
+                }
+
+                if (evadeDamage < hp) {
+                    evadeSurvivalProbability += diceProbability;
+                }
+            }
+        }
+
+        let recommendation;
+
+        // 既存ルールを踏襲：防御で100%生存なら防御を優先。
+        // それ以外は生存率が高い方を選び、同率なら回避を推奨。
+        if (defenseSurvivalProbability >= 1 - epsilon) {
+            recommendation = "防御";
+        } else if (
+            evadeSurvivalProbability + epsilon >=
+            defenseSurvivalProbability
+        ) {
+            recommendation = "回避";
+        } else {
+            recommendation = "防御";
+        }
+
+        choices.push({
+            attackDice,
+            recommendation,
+            defenseSurvivalProbability,
+            evadeSurvivalProbability
+        });
+    }
+
+    return choices;
+}
+
+
+// 防御側：攻撃出目1～6ごとの推奨をカード下に表示
+function renderDefenseChoiceGuide(
+    calculator,
+    attackPower,
+    defensePower,
+    damageAdd,
+    damageReduce,
+    hp
+) {
+    const grid = calculator.querySelector(".defense-choice-grid");
+
+    if (!grid) {
+        return;
+    }
+
+    const choices = getCardAwareDefenseChoices(
+        calculator,
+        attackPower,
+        defensePower,
+        damageAdd,
+        damageReduce,
+        hp
+    );
+
+    grid.innerHTML = choices.map(choice => {
+        const defenseRate =
+            (choice.defenseSurvivalProbability * 100).toFixed(1);
+        const evadeRate =
+            (choice.evadeSurvivalProbability * 100).toFixed(1);
+        const choiceClass = choice.recommendation === "防御"
+            ? "defense-choice"
+            : "evade-choice";
+
+        return `
+            <div class="defense-choice-cell ${choiceClass}">
+                <div class="defense-choice-die">${choice.attackDice}</div>
+                <strong>${choice.recommendation}</strong>
+                <small>防 ${defenseRate}%</small>
+                <small>回 ${evadeRate}%</small>
+            </div>
+        `;
+    }).join("");
+}
+
+
 // 下部表示用：カード効果を含めたダメージ分布を計算
 function calculateCardAwareDamage(
     calculator,
@@ -726,6 +851,15 @@ function calculateDamage(calculator, isSurvival = false) {
 
         calculator.querySelector(".result-rate").textContent =
             survivalRate.toFixed(2) + "%";
+
+        renderDefenseChoiceGuide(
+            calculator,
+            attackPower,
+            defensePower,
+            damageAdd,
+            damageReduce,
+            hp
+        );
 
         const recommendation =
             calculator.querySelector(".defense-recommendation");

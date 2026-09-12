@@ -628,3 +628,86 @@ tbody th {
 .battle-card-reset-item {
     justify-content: flex-start;
 }
+
+
+/* =================================
+   防御側：攻撃出目ごとの防御 / 回避 指標
+   ================================= */
+.defense-card-and-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+}
+
+.defense-choice-guide {
+    width: 510px;
+    padding: 10px 12px 12px;
+    border: 2px solid #9fc3e6;
+    border-radius: 8px;
+    background: #f7fbff;
+}
+
+.defense-choice-guide-title {
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+    color: #357;
+}
+
+.defense-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.defense-choice-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 6px 3px;
+    border: 1px solid #b8c7d8;
+    border-radius: 6px;
+    background: #fff;
+    line-height: 1.15;
+}
+
+.defense-choice-die {
+    width: 100%;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #d8e0e8;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.defense-choice-cell strong {
+    margin-bottom: 4px;
+    font-size: 16px;
+}
+
+.defense-choice-cell small {
+    display: block;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.defense-choice-cell.defense-choice {
+    background: #eaf3ff;
+    border-color: #5f9bd3;
+}
+
+.defense-choice-cell.evade-choice {
+    background: #eefaf7;
+    border-color: #70b9a8;
+}
+
+@media (max-width: 900px) {
+    .defense-choice-guide {
+        width: 100%;
+    }
+}
