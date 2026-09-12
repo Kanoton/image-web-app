@@ -455,16 +455,26 @@ tbody th {
 }
 
 .battle-card-counter {
+    display: flex;
     justify-content: center;
-    width: 100%;
+    align-items: center;
+
+    width: 120px;
+    gap: 4px;
 }
 
+/* カード下の－＋ボタンだけ小さくする */
 .battle-card-counter button {
-    width: 32px;
+    width: 26px;
     height: 32px;
+    padding: 0;
+    flex-shrink: 0;
 }
 
+/* カード下の数値入力欄だけ細くする */
 .battle-card-counter input {
-    width: 70px;
+    width: 52px;
     height: 32px;
+    padding: 0;
+    text-align: center;
 }
