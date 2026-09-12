@@ -339,3 +339,8 @@ tbody th {
 .effect-panel label {
     margin: 10px 0;
 }
+
+/* パラメータ入力のアイコン＋数値入力を右へ移動 */
+.parameter-input-area label {
+    transform: translateX(15px);
+}
