@@ -442,3 +442,29 @@ tbody th {
     border: 5px solid #ef6b6b;
     border-radius: 10px;
 }
+
+/* =================================
+   バトルカードのカウンタ
+   ================================= */
+
+.battle-card-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.battle-card-counter {
+    justify-content: center;
+    width: 100%;
+}
+
+.battle-card-counter button {
+    width: 32px;
+    height: 32px;
+}
+
+.battle-card-counter input {
+    width: 70px;
+    height: 32px;
+}
