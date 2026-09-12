@@ -136,6 +136,109 @@ function getDefenseRecommendation(
     return "回避を選択";
 }
 
+// ダメージごとの発生確率を、マーカーなしの折れ線グラフで描画
+function renderDamageProbabilityGraph(
+    calculator,
+    damageCounts,
+    maxDamage,
+    totalCombinations
+) {
+    const svg = calculator.querySelector(".damage-probability-graph");
+
+    if (!svg) {
+        return;
+    }
+
+    const xMin = 0;
+    const xMax = Math.max(1, maxDamage + 1);
+
+    const probabilities = [];
+    let maxProbability = 0;
+
+    for (let damage = xMin; damage <= xMax; damage++) {
+        const count = damageCounts.get(damage) || 0;
+        const probability = (count / totalCombinations) * 100;
+
+        probabilities.push({ damage, probability });
+        maxProbability = Math.max(maxProbability, probability);
+    }
+
+    // 縦軸は最大発生確率より少し上まで表示（10%刻み）
+    const yMax = Math.max(10, Math.ceil(maxProbability / 10) * 10);
+
+    const width = 620;
+    const height = 320;
+    const margin = {
+        top: 18,
+        right: 18,
+        bottom: 48,
+        left: 58
+    };
+
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.top - margin.bottom;
+
+    const xToSvg = damage =>
+        margin.left + ((damage - xMin) / (xMax - xMin)) * plotWidth;
+
+    const yToSvg = probability =>
+        margin.top + plotHeight - (probability / yMax) * plotHeight;
+
+    const svgParts = [];
+
+    svgParts.push(
+        `<title>ダメージ発生確率</title>`,
+        `<desc>横軸がダメージ、縦軸が発生確率です。</desc>`
+    );
+
+    // 横方向グリッドと縦軸目盛り
+    const yTickCount = 5;
+    for (let i = 0; i <= yTickCount; i++) {
+        const probability = (yMax / yTickCount) * i;
+        const y = yToSvg(probability);
+
+        svgParts.push(
+            `<line class="graph-grid" x1="${margin.left}" y1="${y}" x2="${margin.left + plotWidth}" y2="${y}"></line>`,
+            `<text class="graph-label" x="${margin.left - 8}" y="${y + 4}" text-anchor="end">${probability.toFixed(0)}%</text>`
+        );
+    }
+
+    // 縦方向グリッドと横軸目盛り
+    for (let damage = xMin; damage <= xMax; damage++) {
+        const x = xToSvg(damage);
+
+        svgParts.push(
+            `<line class="graph-grid" x1="${x}" y1="${margin.top}" x2="${x}" y2="${margin.top + plotHeight}"></line>`,
+            `<text class="graph-label" x="${x}" y="${margin.top + plotHeight + 20}" text-anchor="middle">${damage}</text>`
+        );
+    }
+
+    // 軸
+    svgParts.push(
+        `<line class="graph-axis" x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + plotHeight}"></line>`,
+        `<line class="graph-axis" x1="${margin.left}" y1="${margin.top + plotHeight}" x2="${margin.left + plotWidth}" y2="${margin.top + plotHeight}"></line>`
+    );
+
+    // マーカーなしの折れ線
+    const points = probabilities
+        .map(item => `${xToSvg(item.damage)},${yToSvg(item.probability)}`)
+        .join(" ");
+
+    svgParts.push(
+        `<polyline class="graph-line" points="${points}"></polyline>`
+    );
+
+    // 軸タイトル
+    svgParts.push(
+        `<text class="graph-axis-title" x="${margin.left + plotWidth / 2}" y="${height - 8}" text-anchor="middle">ダメージ</text>`,
+        `<text class="graph-axis-title" transform="translate(16 ${margin.top + plotHeight / 2}) rotate(-90)" text-anchor="middle">発生確率</text>`
+    );
+
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    svg.innerHTML = svgParts.join("");
+}
+
+
 function calculateDamage(calculator, isSurvival = false) {
     const attackPower =
         Number(calculator.querySelector('[id^="attackPower"]').value);
@@ -160,7 +263,9 @@ function calculateDamage(calculator, isSurvival = false) {
     let totalDamage = 0;
     let defeatCount = 0;
     let survivalCount = 0;
+    let maxDamage = 0;
 
+    const damageCounts = new Map();
     const totalCombinations = 36;
 
     for (let attackDice = 1; attackDice <= 6; attackDice++) {
@@ -201,10 +306,24 @@ function calculateDamage(calculator, isSurvival = false) {
 
             row.appendChild(cell);
             totalDamage += finalDamage;
+
+            damageCounts.set(
+                finalDamage,
+                (damageCounts.get(finalDamage) || 0) + 1
+            );
+
+            maxDamage = Math.max(maxDamage, finalDamage);
         }
 
         tableBody.appendChild(row);
     }
+
+    renderDamageProbabilityGraph(
+        calculator,
+        damageCounts,
+        maxDamage,
+        totalCombinations
+    );
 
     const expectedDamage =
         totalDamage / totalCombinations;

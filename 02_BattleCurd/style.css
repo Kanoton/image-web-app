@@ -417,22 +417,29 @@ tbody th {
 }
 
 /* =================================
-   バトルカード
+   バトルカード・ダメージ分布グラフ
    ================================= */
 
-/* カードエリア全体
-   4列で配置し、上部に区切りの破線を表示 */
-.battle-card-area {
+/* 下段全体：左にカード、右にグラフ */
+.battle-lower-area {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: repeat(4, 120px);
-    justify-content: start;
-    gap: 10px;
-
+    grid-template-columns: 510px minmax(0, 1fr);
+    gap: 25px;
+    align-items: start;
     width: 100%;
     margin-top: 5px;
     padding-top: 20px;
     border-top: 2px dashed #aaa;
+}
+
+/* カードエリア：4列 */
+.battle-card-area {
+    display: grid;
+    grid-template-columns: repeat(4, 120px);
+    justify-content: start;
+    gap: 10px;
+    min-width: 0;
 }
 
 /* カード1枚分：画像＋カウンタ */
@@ -480,4 +487,69 @@ tbody th {
     height: 32px;
     padding: 0;
     text-align: center;
+}
+
+/* ダメージ発生確率グラフ */
+.damage-graph-area {
+    min-width: 0;
+    width: 100%;
+    height: 330px;
+    padding: 4px 0 0;
+}
+
+.damage-probability-graph {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.damage-probability-graph .graph-grid {
+    stroke: #ddd;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+}
+
+.damage-probability-graph .graph-axis {
+    stroke: #666;
+    stroke-width: 1.5;
+}
+
+.damage-probability-graph .graph-line {
+    fill: none;
+    stroke: #444;
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.attack-mode .damage-probability-graph .graph-line {
+    stroke: #ef6b6b;
+}
+
+.defense-mode .damage-probability-graph .graph-line {
+    stroke: #5f9bd3;
+}
+
+.damage-probability-graph .graph-label {
+    fill: #333;
+    font-size: 12px;
+    font-family: sans-serif;
+}
+
+.damage-probability-graph .graph-axis-title {
+    fill: #222;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+@media (max-width: 900px) {
+    .battle-lower-area {
+        grid-template-columns: 1fr;
+    }
+
+    .damage-graph-area {
+        height: 280px;
+    }
 }
