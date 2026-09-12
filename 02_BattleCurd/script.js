@@ -437,6 +437,7 @@ function calculateCardAwareDamage(
     let expectedDamage = 0;
     let defeatProbability = 0;
     let survivalProbability = 0;
+    let minDamage = Infinity;
     let maxDamage = 0;
 
     for (
@@ -480,6 +481,9 @@ function calculateCardAwareDamage(
                         survivalProbability += probability;
                     }
 
+                    minDamage =
+                        Math.min(minDamage, finalDamage);
+
                     maxDamage =
                         Math.max(maxDamage, finalDamage);
                 }
@@ -489,6 +493,7 @@ function calculateCardAwareDamage(
 
     return {
         damageCounts,
+        minDamage: Number.isFinite(minDamage) ? minDamage : 0,
         maxDamage,
         expectedDamage,
         defeatProbability,
@@ -512,12 +517,12 @@ function renderDamageProbabilityGraph(
     }
 
     // 横軸は「実際に発生する最小ダメージ」から開始し、
-    // 最大値は「最大ダメージ + 1」まで表示する
+    // 最大値は「実際に発生する最大ダメージ」まで表示する
     const damageValues = Array.from(damageCounts.keys());
     const xMin = damageValues.length > 0
         ? Math.min(...damageValues)
         : 0;
-    const xMax = Math.max(xMin + 1, maxDamage + 1);
+    const xMax = Math.max(xMin, maxDamage);
 
     const probabilities = [];
     let maxProbability = 0;
@@ -570,8 +575,15 @@ function renderDamageProbabilityGraph(
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
 
-    const xToSvg = damage =>
-        margin.left + ((damage - xMin) / (xMax - xMin)) * plotWidth;
+    const xToSvg = damage => {
+        // 最小値と最大値が同じ場合でも0除算にならないよう中央に配置
+        if (xMax === xMin) {
+            return margin.left + plotWidth / 2;
+        }
+
+        return margin.left +
+            ((damage - xMin) / (xMax - xMin)) * plotWidth;
+    };
 
     const yToSvg = probability =>
         margin.top + plotHeight - (probability / yMax) * plotHeight;
@@ -622,10 +634,12 @@ function renderDamageProbabilityGraph(
 
     // HPを境に、表示する確率範囲だけを斜線で塗る
     if (isDefenseMode) {
-        // 防御側：生存条件は「ダメージ < HP」なので、HPより左側を塗る
+        // 防御側：生存条件は「ダメージ < HP」。
+        // ダメージは整数なので、HP-1 と HP の中間を境界にして
+        // HP未満の発生ダメージだけが斜線範囲に入るようにする。
         if (hp > xMin) {
             const hatchStartX = xToSvg(xMin);
-            const hatchEndDamage = Math.min(hp, xMax);
+            const hatchEndDamage = Math.min(hp - 0.5, xMax);
             const hatchEndX = xToSvg(hatchEndDamage);
             const hatchWidth = hatchEndX - hatchStartX;
 
@@ -819,6 +833,14 @@ function calculateDamage(calculator, isSurvival = false) {
         1,
         hp
     );
+
+    const futureDamageRange =
+        calculator.querySelector(".future-damage-range");
+
+    if (futureDamageRange) {
+        futureDamageRange.textContent =
+            `${cardAwareResult.minDamage}～${cardAwareResult.maxDamage}`;
+    }
 
     const futureExpectedDamage =
         calculator.querySelector(".future-expected-damage");

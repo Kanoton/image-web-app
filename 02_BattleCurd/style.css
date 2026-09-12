@@ -577,6 +577,29 @@ tbody th {
     margin-top: 0;
 }
 
+
+/* バトルカード使用時：ダメージ範囲・期待値・確率を3項目で表示 */
+.future-analysis-values {
+    justify-content: space-between;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.future-analysis-values div {
+    min-width: 0;
+    gap: 8px;
+}
+
+.future-analysis-values span {
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.future-analysis-values strong {
+    font-size: 20px;
+    white-space: nowrap;
+}
+
 /* 軸の数値を少し大きく */
 .damage-probability-graph .graph-label {
     font-size: 15px;
