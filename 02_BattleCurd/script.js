@@ -194,9 +194,9 @@ function renderDamageProbabilityGraph(
     // SVG内部の上下の空白を減らす
     const height = 325;
     const margin = {
-        top: 7,
-        right: 14,
-        bottom: 31,
+        top: 10,
+        right: 15,
+        bottom: 35,
         left: 50
     };
 
