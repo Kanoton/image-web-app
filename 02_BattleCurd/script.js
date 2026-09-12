@@ -404,8 +404,8 @@ function renderDefenseChoiceGuide(
             <div class="defense-choice-cell ${choiceClass}">
                 <div class="defense-choice-die">${choice.attackDice}</div>
                 <strong>${choice.recommendation}</strong>
-                <small>防 ${defenseRate}%</small>
-                <small>回 ${evadeRate}%</small>
+                <small class="choice-rate-row"><span class="choice-rate-label">防</span><span class="choice-rate-value">${defenseRate}%</span></small>
+                <small class="choice-rate-row"><span class="choice-rate-label">回</span><span class="choice-rate-value">${evadeRate}%</span></small>
             </div>
         `;
     }).join("");

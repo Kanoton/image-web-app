@@ -708,6 +708,29 @@ tbody th {
     white-space: nowrap;
 }
 
+/* 防御/回避の生存率：ラベルと数値を別幅にして縦位置・横位置を固定 */
+.defense-choice-cell .choice-rate-row {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    column-gap: 3px;
+    align-items: baseline;
+    width: 100%;
+    padding: 0 3px;
+    font-size: 12px;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.defense-choice-cell .choice-rate-label {
+    text-align: center;
+}
+
+.defense-choice-cell .choice-rate-value {
+    min-width: 0;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
 .defense-choice-cell.defense-choice {
     background: #eaf3ff;
     border-color: #5f9bd3;
