@@ -265,16 +265,16 @@ function getDefensePowerDistribution(calculator, baseDefensePower) {
     bonusDistribution =
         addUniformCardBonus(bonusDistribution, 1, 6, def2);
 
-    // Def3：1枚ごとに1～1 ＝ 固定で+1
-    const fixedBonus = def3;
+    // Def3：1枚ごとに1～10
+    bonusDistribution =
+        addUniformCardBonus(bonusDistribution, 1, 10, def3);
 
     const defensePowerDistribution = new Map();
 
     for (const [randomBonus, probability] of bonusDistribution) {
         const finalDefensePower =
             baseDefensePower +
-            randomBonus +
-            fixedBonus;
+            randomBonus;
 
         defensePowerDistribution.set(
             finalDefensePower,
@@ -429,9 +429,9 @@ function renderDamageProbabilityGraph(
     // SVG内部の上下の空白を減らす
     const height = 325;
     const margin = {
-        top: 7,
-        right: 14,
-        bottom: 31,
+        top: 10,
+        right: 15,
+        bottom: 35,
         left: 50
     };
 
