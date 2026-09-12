@@ -143,7 +143,8 @@ function renderDamageProbabilityGraph(
     calculator,
     damageCounts,
     maxDamage,
-    totalCombinations
+    totalCombinations,
+    hp
 ) {
     const svg = calculator.querySelector(".damage-probability-graph");
 
@@ -194,9 +195,9 @@ function renderDamageProbabilityGraph(
     // SVG内部の上下の空白を減らす
     const height = 325;
     const margin = {
-        top: 10,
-        right: 15,
-        bottom: 35,
+        top: 7,
+        right: 14,
+        bottom: 31,
         left: 50
     };
 
@@ -213,8 +214,44 @@ function renderDamageProbabilityGraph(
 
     svgParts.push(
         `<title>ダメージ発生確率</title>`,
-        `<desc>横軸がダメージ、縦軸が発生確率です。</desc>`
+        `<desc>横軸がダメージ、縦軸が発生確率です。HP以上の範囲は斜線で表示します。</desc>`
     );
+
+    // HP以上のダメージ範囲を斜線で表示
+    // 攻撃モードは赤系、防御モードは青系
+    const isDefenseMode = calculator.dataset.role === "defense";
+    const hatchColor = isDefenseMode ? "#5f9bd3" : "#ef6b6b";
+    const hatchPatternId = isDefenseMode
+        ? "defense-defeat-hatch"
+        : "attack-defeat-hatch";
+
+    svgParts.push(
+        `<defs>
+            <pattern id="${hatchPatternId}" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(0)">
+                <line x1="0" y1="8" x2="8" y2="0" stroke="${hatchColor}" stroke-width="1.5" stroke-opacity="0.28"></line>
+            </pattern>
+        </defs>`
+    );
+
+    if (hp <= xMax) {
+        const hatchStartDamage = Math.max(hp, xMin);
+        const hatchStartX = xToSvg(hatchStartDamage);
+        const hatchWidth = margin.left + plotWidth - hatchStartX;
+
+        if (hatchWidth > 0) {
+            svgParts.push(
+                `<rect x="${hatchStartX}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})"></rect>`
+            );
+        }
+
+        // HPが横軸の表示範囲内にある場合は境界線も表示
+        if (hp >= xMin && hp <= xMax) {
+            const hpX = xToSvg(hp);
+            svgParts.push(
+                `<line x1="${hpX}" y1="${margin.top}" x2="${hpX}" y2="${margin.top + plotHeight}" stroke="${hatchColor}" stroke-width="1.5" stroke-dasharray="5 4" stroke-opacity="0.75"></line>`
+            );
+        }
+    }
 
     // 横方向グリッドと縦軸目盛り
     const yTickCount = Math.round(yMax / yTickStep);
@@ -342,7 +379,8 @@ function calculateDamage(calculator, isSurvival = false) {
         calculator,
         damageCounts,
         maxDamage,
-        totalCombinations
+        totalCombinations,
+        hp
     );
 
     const expectedDamage =
