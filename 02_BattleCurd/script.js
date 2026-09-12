@@ -634,12 +634,10 @@ function renderDamageProbabilityGraph(
 
     // HPを境に、表示する確率範囲だけを斜線で塗る
     if (isDefenseMode) {
-        // 防御側：生存条件は「ダメージ < HP」。
-        // ダメージは整数なので、HP-1 と HP の中間を境界にして
-        // HP未満の発生ダメージだけが斜線範囲に入るようにする。
+        // 防御側：元の表示仕様に戻し、HP地点までを斜線範囲として描画する
         if (hp > xMin) {
             const hatchStartX = xToSvg(xMin);
-            const hatchEndDamage = Math.min(hp - 0.5, xMax);
+            const hatchEndDamage = Math.min(hp, xMax);
             const hatchEndX = xToSvg(hatchEndDamage);
             const hatchWidth = hatchEndX - hatchStartX;
 
@@ -672,8 +670,16 @@ function renderDamageProbabilityGraph(
             probabilities.find(item => item.damage === hp)?.probability ?? 0;
         const hpY = yToSvg(hpProbability);
 
+        // 発生しうる最大ダメージがHPと等しい場合は、
+        // 斜線範囲が端で消えるため、境界を少し太い実線で強調する
+        const isMaxDamageAtHp = maxDamage === hp;
+        const boundaryStrokeWidth = isMaxDamageAtHp ? 2.5 : 1.5;
+        const boundaryDash = isMaxDamageAtHp
+            ? ""
+            : ' stroke-dasharray="5 4"';
+
         svgParts.push(
-            `<line x1="${hpX}" y1="${hpY}" x2="${hpX}" y2="${baselineY}" stroke="${hatchColor}" stroke-width="1.5" stroke-dasharray="5 4" stroke-opacity="0.75"></line>`
+            `<line x1="${hpX}" y1="${hpY}" x2="${hpX}" y2="${baselineY}" stroke="${hatchColor}" stroke-width="${boundaryStrokeWidth}"${boundaryDash} stroke-opacity="0.85"></line>`
         );
     }
 
