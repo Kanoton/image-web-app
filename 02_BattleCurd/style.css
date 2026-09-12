@@ -438,4 +438,7 @@ tbody th {
     width: 120px;
     height: auto;
     display: block;
+
+    border: 5px solid #ef6b6b;
+    border-radius: 10px;
 }
