@@ -138,6 +138,240 @@ function getDefenseRecommendation(
     return "回避を選択";
 }
 
+
+// =================================
+// バトルカード効果
+// 下部グラフ・下部の期待値/確率だけに使用
+// =================================
+
+// 指定カードの使用枚数を取得
+function getCardCount(calculator, id) {
+    const input = calculator.querySelector(`#${id}`);
+
+    if (!input) {
+        return 0;
+    }
+
+    const value = Number(input.value);
+
+    if (!Number.isFinite(value)) {
+        return 0;
+    }
+
+    return Math.max(0, Math.floor(value));
+}
+
+
+// 「合計ボーナス値 → 発生確率」の分布に、
+// 1枚ごとのランダム増加を指定枚数ぶん畳み込む
+function addUniformCardBonus(distribution, minBonus, maxBonus, count) {
+    let result = distribution;
+
+    for (let use = 0; use < count; use++) {
+        const next = new Map();
+        const rangeSize = maxBonus - minBonus + 1;
+
+        for (const [currentBonus, currentProbability] of result) {
+            for (let bonus = minBonus; bonus <= maxBonus; bonus++) {
+                const newBonus = currentBonus + bonus;
+                const probability =
+                    currentProbability / rangeSize;
+
+                next.set(
+                    newBonus,
+                    (next.get(newBonus) || 0) + probability
+                );
+            }
+        }
+
+        result = next;
+    }
+
+    return result;
+}
+
+
+// 攻撃カード込みの攻撃力分布を作成
+function getAttackPowerDistribution(calculator, baseAttackPower) {
+    const atk1 = getCardCount(calculator, "Atk1");
+    const atk2 = getCardCount(calculator, "Atk2");
+    const atk3 = getCardCount(calculator, "Atk3");
+    const atk4 = getCardCount(calculator, "Atk4");
+    const atk5 = getCardCount(calculator, "Atk5");
+    const atk6 = getCardCount(calculator, "Atk6");
+    const atk7 = getCardCount(calculator, "Atk7");
+
+    let bonusDistribution = new Map([[0, 1]]);
+
+    // ランダム増加カード
+    bonusDistribution =
+        addUniformCardBonus(bonusDistribution, 1, 3, atk1);
+
+    bonusDistribution =
+        addUniformCardBonus(bonusDistribution, 1, 6, atk2);
+
+    bonusDistribution =
+        addUniformCardBonus(bonusDistribution, 1, 10, atk3);
+
+    bonusDistribution =
+        addUniformCardBonus(bonusDistribution, 1, 20, atk4);
+
+    // 固定増加カード
+    const fixedBonus =
+        atk5 * 3 +
+        atk6 * 5 +
+        atk7 * 6;
+
+    const attackPowerDistribution = new Map();
+
+    for (const [randomBonus, probability] of bonusDistribution) {
+        let finalAttackPower =
+            baseAttackPower +
+            randomBonus +
+            fixedBonus;
+
+        // Atk7を1枚以上使用している場合は、
+        // すべてのカード増加を反映した後の攻撃力を1.5倍
+        // 小数点以下は切り捨て
+        if (atk7 >= 1) {
+            finalAttackPower =
+                Math.floor(finalAttackPower * 1.5);
+        }
+
+        attackPowerDistribution.set(
+            finalAttackPower,
+            (attackPowerDistribution.get(finalAttackPower) || 0) +
+                probability
+        );
+    }
+
+    return attackPowerDistribution;
+}
+
+
+// 防御カード込みの防御力分布を作成
+function getDefensePowerDistribution(calculator, baseDefensePower) {
+    const def1 = getCardCount(calculator, "Def1");
+    const def2 = getCardCount(calculator, "Def2");
+    const def3 = getCardCount(calculator, "Def3");
+
+    let bonusDistribution = new Map([[0, 1]]);
+
+    // Def1：1枚ごとに1～3
+    bonusDistribution =
+        addUniformCardBonus(bonusDistribution, 1, 3, def1);
+
+    // Def2：1枚ごとに1～6
+    bonusDistribution =
+        addUniformCardBonus(bonusDistribution, 1, 6, def2);
+
+    // Def3：1枚ごとに1～1 ＝ 固定で+1
+    const fixedBonus = def3;
+
+    const defensePowerDistribution = new Map();
+
+    for (const [randomBonus, probability] of bonusDistribution) {
+        const finalDefensePower =
+            baseDefensePower +
+            randomBonus +
+            fixedBonus;
+
+        defensePowerDistribution.set(
+            finalDefensePower,
+            (defensePowerDistribution.get(finalDefensePower) || 0) +
+                probability
+        );
+    }
+
+    return defensePowerDistribution;
+}
+
+
+// 下部表示用：カード効果を含めたダメージ分布を計算
+function calculateCardAwareDamage(
+    calculator,
+    attackPower,
+    defensePower,
+    damageAdd,
+    damageReduce,
+    hp,
+    isSurvival
+) {
+    // 攻撃モードでは攻撃カードだけを反映
+    // 防御モードでは防御カードだけを反映
+    const attackPowerDistribution = isSurvival
+        ? new Map([[attackPower, 1]])
+        : getAttackPowerDistribution(calculator, attackPower);
+
+    const defensePowerDistribution = isSurvival
+        ? getDefensePowerDistribution(calculator, defensePower)
+        : new Map([[defensePower, 1]]);
+
+    const damageCounts = new Map();
+
+    let expectedDamage = 0;
+    let defeatProbability = 0;
+    let survivalProbability = 0;
+    let maxDamage = 0;
+
+    for (
+        const [cardAttackPower, attackPowerProbability]
+        of attackPowerDistribution
+    ) {
+        for (
+            const [cardDefensePower, defensePowerProbability]
+            of defensePowerDistribution
+        ) {
+            const cardProbability =
+                attackPowerProbability *
+                defensePowerProbability;
+
+            for (let attackDice = 1; attackDice <= 6; attackDice++) {
+                for (let defenseDice = 1; defenseDice <= 6; defenseDice++) {
+                    const finalDamage = getDefenseDamage(
+                        cardAttackPower,
+                        cardDefensePower,
+                        damageAdd,
+                        damageReduce,
+                        attackDice,
+                        defenseDice
+                    );
+
+                    const probability =
+                        cardProbability / 36;
+
+                    damageCounts.set(
+                        finalDamage,
+                        (damageCounts.get(finalDamage) || 0) +
+                            probability
+                    );
+
+                    expectedDamage +=
+                        finalDamage * probability;
+
+                    if (finalDamage >= hp) {
+                        defeatProbability += probability;
+                    } else {
+                        survivalProbability += probability;
+                    }
+
+                    maxDamage =
+                        Math.max(maxDamage, finalDamage);
+                }
+            }
+        }
+    }
+
+    return {
+        damageCounts,
+        maxDamage,
+        expectedDamage,
+        defeatProbability,
+        survivalProbability
+    };
+}
+
+
 // ダメージごとの発生確率を、マーカーなしの折れ線グラフで描画
 function renderDamageProbabilityGraph(
     calculator,
@@ -195,9 +429,9 @@ function renderDamageProbabilityGraph(
     // SVG内部の上下の空白を減らす
     const height = 325;
     const margin = {
-        top: 10,
-        right: 15,
-        bottom: 35,
+        top: 7,
+        right: 14,
+        bottom: 31,
         left: 50
     };
 
@@ -414,13 +648,50 @@ function calculateDamage(calculator, isSurvival = false) {
         tableBody.appendChild(row);
     }
 
+    // 上部の表・期待値・撃破率/生存率は、
+    // ここまでの従来計算（カード効果なし）をそのまま使用する
+
+    // 下部グラフ・下部の期待値/確率だけはカード効果を反映する
+    const cardAwareResult =
+        calculateCardAwareDamage(
+            calculator,
+            attackPower,
+            defensePower,
+            damageAdd,
+            damageReduce,
+            hp,
+            isSurvival
+        );
+
+    // cardAwareResult.damageCounts は「回数」ではなく確率そのものなので、
+    // totalCombinations = 1 として描画する
     renderDamageProbabilityGraph(
         calculator,
-        damageCounts,
-        maxDamage,
-        totalCombinations,
+        cardAwareResult.damageCounts,
+        cardAwareResult.maxDamage,
+        1,
         hp
     );
+
+    const futureExpectedDamage =
+        calculator.querySelector(".future-expected-damage");
+
+    if (futureExpectedDamage) {
+        futureExpectedDamage.textContent =
+            cardAwareResult.expectedDamage.toFixed(2);
+    }
+
+    const futureResultRate =
+        calculator.querySelector(".future-result-rate");
+
+    if (futureResultRate) {
+        const futureRate = isSurvival
+            ? cardAwareResult.survivalProbability * 100
+            : cardAwareResult.defeatProbability * 100;
+
+        futureResultRate.textContent =
+            futureRate.toFixed(2) + "%";
+    }
 
     const expectedDamage =
         totalDamage / totalCombinations;
