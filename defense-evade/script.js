@@ -64,8 +64,11 @@ function getEvadeDamage(
 
 
 // 防御側：攻撃ダイスの出目ごとに「防御」と「回避」を比較
-// 1. 生存率が高い方を優先
-// 2. 生存率が同じなら期待残存HPが高い方を優先
+// 判定基準
+// 1. 「防御」で100%生存できる出目では、必ず防御を推奨
+// 2. 100%でない場合は、防御と回避の生存率を比較
+// 3. 回避の生存率が高ければ回避
+// 4. 生存率が同じなら、成功時に0ダメージとなる回避を推奨
 function getDefenseRecommendation(
     attackPower,
     defensePower,
@@ -78,8 +81,6 @@ function getDefenseRecommendation(
     for (let attackDice = 1; attackDice <= 6; attackDice++) {
         let defenseSurvivalCount = 0;
         let evadeSurvivalCount = 0;
-        let defenseRemainingHpTotal = 0;
-        let evadeRemainingHpTotal = 0;
 
         for (let defenseDice = 1; defenseDice <= 6; defenseDice++) {
             const defenseDamage = getDefenseDamage(
@@ -106,30 +107,16 @@ function getDefenseRecommendation(
             if (evadeDamage < hp) {
                 evadeSurvivalCount++;
             }
-
-            // 撃破された場合の残存HPは0として扱う
-            defenseRemainingHpTotal += Math.max(hp - defenseDamage, 0);
-            evadeRemainingHpTotal += Math.max(hp - evadeDamage, 0);
         }
 
-        const defenseSurvivalRate = defenseSurvivalCount / 6;
-        const evadeSurvivalRate = evadeSurvivalCount / 6;
-        const defenseExpectedRemainingHp = defenseRemainingHpTotal / 6;
-        const evadeExpectedRemainingHp = evadeRemainingHpTotal / 6;
+        // その攻撃出目に対して「防御」で100%生存できるなら防御を選ぶ
+        if (defenseSurvivalCount === 6) {
+            continue;
+        }
 
-        const evadeHasHigherSurvival =
-            evadeSurvivalRate > defenseSurvivalRate;
-
-        const sameSurvivalRate =
-            evadeSurvivalRate === defenseSurvivalRate;
-
-        const evadeHasMoreRemainingHp =
-            evadeExpectedRemainingHp > defenseExpectedRemainingHp;
-
-        if (
-            evadeHasHigherSurvival ||
-            (sameSurvivalRate && evadeHasMoreRemainingHp)
-        ) {
+        // 防御が100%でない場合：
+        // 回避の生存率が高い、または同率なら回避を推奨
+        if (evadeSurvivalCount >= defenseSurvivalCount) {
             evadeBetterDice.push(attackDice);
         }
     }
@@ -148,10 +135,9 @@ function getDefenseRecommendation(
         return `攻撃出目${firstDice}以上 → 回避`;
     }
 
-    // 連続しない場合は、回避が有利な攻撃ダイスの出目をすべて表示
+    // 連続しない場合は、回避を推奨する攻撃ダイスの出目をすべて表示
     return `攻撃出目${evadeBetterDice.join("・")} → 回避`;
 }
-
 
 function calculateDamage(calculator, isSurvival = false) {
     const attackPower =
@@ -241,15 +227,13 @@ function calculateDamage(calculator, isSurvival = false) {
 
         if (recommendation) {
             recommendation.textContent =
-                survivalRate === 100
-                    ? "防御で生存率100%"
-                    : getDefenseRecommendation(
-                        attackPower,
-                        defensePower,
-                        damageAdd,
-                        damageReduce,
-                        hp
-                    );
+                getDefenseRecommendation(
+                    attackPower,
+                    defensePower,
+                    damageAdd,
+                    damageReduce,
+                    hp
+                );
         }
     } else {
         const defeatRate =
