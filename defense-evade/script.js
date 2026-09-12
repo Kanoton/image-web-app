@@ -63,7 +63,9 @@ function getEvadeDamage(
 }
 
 
-// 防御側：攻撃ダイスごとに「防御」と「回避」の生存率を比較
+// 防御側：攻撃ダイスの出目ごとに「防御」と「回避」を比較
+// 1. 生存率が高い方を優先
+// 2. 生存率が同じなら期待残存HPが高い方を優先
 function getDefenseRecommendation(
     attackPower,
     defensePower,
@@ -76,6 +78,8 @@ function getDefenseRecommendation(
     for (let attackDice = 1; attackDice <= 6; attackDice++) {
         let defenseSurvivalCount = 0;
         let evadeSurvivalCount = 0;
+        let defenseRemainingHpTotal = 0;
+        let evadeRemainingHpTotal = 0;
 
         for (let defenseDice = 1; defenseDice <= 6; defenseDice++) {
             const defenseDamage = getDefenseDamage(
@@ -102,9 +106,30 @@ function getDefenseRecommendation(
             if (evadeDamage < hp) {
                 evadeSurvivalCount++;
             }
+
+            // 撃破された場合の残存HPは0として扱う
+            defenseRemainingHpTotal += Math.max(hp - defenseDamage, 0);
+            evadeRemainingHpTotal += Math.max(hp - evadeDamage, 0);
         }
 
-        if (evadeSurvivalCount > defenseSurvivalCount) {
+        const defenseSurvivalRate = defenseSurvivalCount / 6;
+        const evadeSurvivalRate = evadeSurvivalCount / 6;
+        const defenseExpectedRemainingHp = defenseRemainingHpTotal / 6;
+        const evadeExpectedRemainingHp = evadeRemainingHpTotal / 6;
+
+        const evadeHasHigherSurvival =
+            evadeSurvivalRate > defenseSurvivalRate;
+
+        const sameSurvivalRate =
+            evadeSurvivalRate === defenseSurvivalRate;
+
+        const evadeHasMoreRemainingHp =
+            evadeExpectedRemainingHp > defenseExpectedRemainingHp;
+
+        if (
+            evadeHasHigherSurvival ||
+            (sameSurvivalRate && evadeHasMoreRemainingHp)
+        ) {
             evadeBetterDice.push(attackDice);
         }
     }
@@ -113,18 +138,18 @@ function getDefenseRecommendation(
         return "防御が有利";
     }
 
-    // X, X+1, ... , 6 と連続している場合は「X以上」と表示
+    // X, X+1, ... , 6 と連続している場合は「攻撃出目X以上」と表示
     const firstDice = evadeBetterDice[0];
     const isContinuousToSix =
         evadeBetterDice.length === 7 - firstDice &&
         evadeBetterDice.every((dice, index) => dice === firstDice + index);
 
     if (isContinuousToSix) {
-        return `攻撃${firstDice}以上 → 回避`;
+        return `攻撃出目${firstDice}以上 → 回避`;
     }
 
-    // パラメータ次第で連続しない場合にも正確に表示
-    return `攻撃${evadeBetterDice.join("・")} → 回避`;
+    // 連続しない場合は、回避が有利な攻撃ダイスの出目をすべて表示
+    return `攻撃出目${evadeBetterDice.join("・")} → 回避`;
 }
 
 
