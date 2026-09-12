@@ -14,7 +14,7 @@ body {
 
 h1 {
     text-align: center;
-    margin: 0 0 40px;
+    margin: 0 0 40px
 }
 
 
@@ -712,7 +712,7 @@ tbody th {
 .defense-choice-cell .choice-rate-row {
     display: grid;
     grid-template-columns: 14px 1fr;
-    column-gap: 3px;
+    column-gap: 0px;
     align-items: baseline;
     width: 100%;
     padding: 0 3px;
