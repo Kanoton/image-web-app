@@ -714,8 +714,8 @@ tbody th {
 }
 
 .defense-choice-cell.evade-choice {
-    background: #eefaf7;
-    border-color: #70b9a8;
+    background: #fff8d9;
+    border-color: #f2cf62;
 }
 
 @media (max-width: 900px) {
