@@ -195,9 +195,9 @@ function renderDamageProbabilityGraph(
     // SVG内部の上下の空白を減らす
     const height = 325;
     const margin = {
-        top: 10,
-        right: 15,
-        bottom: 35,
+        top: 7,
+        right: 14,
+        bottom: 31,
         left: 50
     };
 
@@ -212,45 +212,83 @@ function renderDamageProbabilityGraph(
 
     const svgParts = [];
 
+    // 折れ線と、その下側の領域を作るための座標
+    const linePoints = probabilities
+        .map(item => `${xToSvg(item.damage)},${yToSvg(item.probability)}`)
+        .join(" ");
+
+    const baselineY = margin.top + plotHeight;
+    const areaPoints = [
+        `${xToSvg(xMin)},${baselineY}`,
+        ...probabilities.map(
+            item => `${xToSvg(item.damage)},${yToSvg(item.probability)}`
+        ),
+        `${xToSvg(xMax)},${baselineY}`
+    ].join(" ");
+
     svgParts.push(
         `<title>ダメージ発生確率</title>`,
-        `<desc>横軸がダメージ、縦軸が発生確率です。HP以上の範囲は斜線で表示します。</desc>`
+        `<desc>折れ線より下側のうち、攻撃モードではHP以上、防御モードではHP未満の確率範囲を斜線で表示します。</desc>`
     );
 
-    // HP以上のダメージ範囲を斜線で表示
-    // 攻撃モードは赤系、防御モードは青系
+    // 攻撃モード：HP以上 ＝ 撃破率
+    // 防御モード：HP未満 ＝ 生存率
     const isDefenseMode = calculator.dataset.role === "defense";
     const hatchColor = isDefenseMode ? "#5f9bd3" : "#ef6b6b";
     const hatchPatternId = isDefenseMode
-        ? "defense-defeat-hatch"
+        ? "defense-survival-hatch"
         : "attack-defeat-hatch";
+    const probabilityClipId = isDefenseMode
+        ? "defense-probability-area"
+        : "attack-probability-area";
 
+    // 斜線は「確率の折れ線より下」だけに表示する
     svgParts.push(
         `<defs>
-            <pattern id="${hatchPatternId}" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(0)">
-                <line x1="0" y1="8" x2="8" y2="0" stroke="${hatchColor}" stroke-width="1.5" stroke-opacity="0.28"></line>
+            <pattern id="${hatchPatternId}" patternUnits="userSpaceOnUse" width="8" height="8">
+                <line x1="0" y1="8" x2="8" y2="0" stroke="${hatchColor}" stroke-width="1.5" stroke-opacity="0.30"></line>
             </pattern>
+            <clipPath id="${probabilityClipId}">
+                <polygon points="${areaPoints}"></polygon>
+            </clipPath>
         </defs>`
     );
 
-    if (hp <= xMax) {
-        const hatchStartDamage = Math.max(hp, xMin);
-        const hatchStartX = xToSvg(hatchStartDamage);
-        const hatchWidth = margin.left + plotWidth - hatchStartX;
+    // HPを境に、表示する確率範囲だけを斜線で塗る
+    if (isDefenseMode) {
+        // 防御側は「ダメージ < HP」が生存なので、HPより左側を塗る
+        if (hp > xMin) {
+            const hatchEndDamage = Math.min(hp, xMax);
+            const hatchEndX = xToSvg(hatchEndDamage);
+            const hatchWidth = hatchEndX - margin.left;
 
-        if (hatchWidth > 0) {
-            svgParts.push(
-                `<rect x="${hatchStartX}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})"></rect>`
-            );
+            if (hatchWidth > 0) {
+                svgParts.push(
+                    `<rect x="${margin.left}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})" clip-path="url(#${probabilityClipId})"></rect>`
+                );
+            }
         }
+    } else {
+        // 攻撃側は「ダメージ >= HP」が撃破なので、HPより右側を塗る
+        if (hp <= xMax) {
+            const hatchStartDamage = Math.max(hp, xMin);
+            const hatchStartX = xToSvg(hatchStartDamage);
+            const hatchWidth = margin.left + plotWidth - hatchStartX;
 
-        // HPが横軸の表示範囲内にある場合は境界線も表示
-        if (hp >= xMin && hp <= xMax) {
-            const hpX = xToSvg(hp);
-            svgParts.push(
-                `<line x1="${hpX}" y1="${margin.top}" x2="${hpX}" y2="${margin.top + plotHeight}" stroke="${hatchColor}" stroke-width="1.5" stroke-dasharray="5 4" stroke-opacity="0.75"></line>`
-            );
+            if (hatchWidth > 0) {
+                svgParts.push(
+                    `<rect x="${hatchStartX}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})" clip-path="url(#${probabilityClipId})"></rect>`
+                );
+            }
         }
+    }
+
+    // HPが横軸の表示範囲内にある場合は境界線を表示
+    if (hp >= xMin && hp <= xMax) {
+        const hpX = xToSvg(hp);
+        svgParts.push(
+            `<line x1="${hpX}" y1="${margin.top}" x2="${hpX}" y2="${baselineY}" stroke="${hatchColor}" stroke-width="1.5" stroke-dasharray="5 4" stroke-opacity="0.75"></line>`
+        );
     }
 
     // 横方向グリッドと縦軸目盛り
@@ -282,12 +320,8 @@ function renderDamageProbabilityGraph(
     );
 
     // マーカーなしの折れ線
-    const points = probabilities
-        .map(item => `${xToSvg(item.damage)},${yToSvg(item.probability)}`)
-        .join(" ");
-
     svgParts.push(
-        `<polyline class="graph-line" points="${points}"></polyline>`
+        `<polyline class="graph-line" points="${linePoints}"></polyline>`
     );
 
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
