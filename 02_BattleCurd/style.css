@@ -417,7 +417,7 @@ tbody th {
 }
 
 /* =================================
-   攻撃バトルカード
+   バトルカード
    ================================= */
 
 .battle-card-area {
@@ -441,6 +441,21 @@ tbody th {
 
     border: 5px solid #ef6b6b;
     border-radius: 10px;
+}
+
+/* =================================
+   バトルカード：攻撃・防御の装飾
+   ================================= */
+
+/* 防御側カードだけ青枠にする */
+.defense-card-area .battle-card {
+    border-color: #5f9bd3;
+}
+
+/* カードエリア上部の破線 */
+.battle-card-area {
+    border-top: 2px dashed #aaa;
+    padding-top: 20px;
 }
 
 /* =================================
