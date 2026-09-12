@@ -319,10 +319,11 @@ tbody th {
 
 /* HP・防御の青い枠 */
 .parameter-input-area .defense-panel {
-    padding: 20px 12px;
+    padding: 14px 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 0;
     margin-top: 10px;
 }
 
