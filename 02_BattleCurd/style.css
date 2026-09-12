@@ -415,3 +415,26 @@ tbody th {
 .defense-analysis .recommendation-item {
     margin-left: 0;
 }
+
+/* =================================
+   攻撃バトルカード
+   ================================= */
+
+.battle-card-area {
+    grid-column: 1 / -1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    margin-top: 5px;
+    padding-top: 10px;
+}
+
+.battle-card {
+    width: 120px;
+    height: auto;
+    display: block;
+}
