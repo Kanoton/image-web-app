@@ -195,9 +195,9 @@ function renderDamageProbabilityGraph(
     // SVG内部の上下の空白を減らす
     const height = 325;
     const margin = {
-        top: 10,
-        right: 15,
-        bottom: 35,
+        top: 7,
+        right: 14,
+        bottom: 31,
         left: 50
     };
 
@@ -256,15 +256,15 @@ function renderDamageProbabilityGraph(
 
     // HPを境に、表示する確率範囲だけを斜線で塗る
     if (isDefenseMode) {
-        // 防御側は「ダメージ < HP」が生存なので、HPより左側を塗る
-        if (hp > xMin) {
-            const hatchEndDamage = Math.min(hp, xMax);
-            const hatchEndX = xToSvg(hatchEndDamage);
-            const hatchWidth = hatchEndX - margin.left;
+        // 防御側：塗りつぶし範囲を反転し、HP以上（右側）を塗る
+        if (hp <= xMax) {
+            const hatchStartDamage = Math.max(hp, xMin);
+            const hatchStartX = xToSvg(hatchStartDamage);
+            const hatchWidth = margin.left + plotWidth - hatchStartX;
 
             if (hatchWidth > 0) {
                 svgParts.push(
-                    `<rect x="${margin.left}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})" clip-path="url(#${probabilityClipId})"></rect>`
+                    `<rect x="${hatchStartX}" y="${margin.top}" width="${hatchWidth}" height="${plotHeight}" fill="url(#${hatchPatternId})" clip-path="url(#${probabilityClipId})"></rect>`
                 );
             }
         }
