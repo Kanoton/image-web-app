@@ -195,9 +195,9 @@ function renderDamageProbabilityGraph(
     // SVG内部の上下の空白を減らす
     const height = 325;
     const margin = {
-        top: 10,
-        right: 15,
-        bottom: 35,
+        top: 7,
+        right: 14,
+        bottom: 31,
         left: 50
     };
 
@@ -283,11 +283,16 @@ function renderDamageProbabilityGraph(
         }
     }
 
-    // HPが横軸の表示範囲内にある場合は境界線を表示
+    // HPが横軸の表示範囲内にある場合は、
+    // HP地点の確率グラフとの交点から下端までだけ境界線を表示
     if (hp >= xMin && hp <= xMax) {
         const hpX = xToSvg(hp);
+        const hpProbability =
+            probabilities.find(item => item.damage === hp)?.probability ?? 0;
+        const hpY = yToSvg(hpProbability);
+
         svgParts.push(
-            `<line x1="${hpX}" y1="${margin.top}" x2="${hpX}" y2="${baselineY}" stroke="${hatchColor}" stroke-width="1.5" stroke-dasharray="5 4" stroke-opacity="0.75"></line>`
+            `<line x1="${hpX}" y1="${hpY}" x2="${hpX}" y2="${baselineY}" stroke="${hatchColor}" stroke-width="1.5" stroke-dasharray="5 4" stroke-opacity="0.75"></line>`
         );
     }
 
