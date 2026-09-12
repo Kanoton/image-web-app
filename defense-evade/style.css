@@ -239,9 +239,8 @@ tbody th {
     background-color: #ffd9a8;
 }
 
-
 /* =================================
-   期待値・確率
+   期待値・確率・推奨
    ================================= */
 .analysis-values {
     display: flex;
@@ -257,23 +256,30 @@ tbody th {
     text-align: center;
 }
 
-.analysis-values div {
+.analysis-values > div {
     display: flex;
     flex: 1;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
+    min-width: 0;
 }
 
 .analysis-values span {
     font-size: 17px;
+    white-space: nowrap;
 }
 
 .analysis-values strong {
     font-size: 22px;
+    white-space: nowrap;
 }
 
+/* 推奨結果は文字数が多いため少し小さくする */
+.analysis-values .recommendation {
+    font-size: 17px;
+}
 
 /* =================================
    攻撃・防御 切り替えタブ
