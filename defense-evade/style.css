@@ -239,8 +239,9 @@ tbody th {
     background-color: #ffd9a8;
 }
 
+
 /* =================================
-   期待値・確率・推奨
+   期待値・確率
    ================================= */
 .analysis-values {
     display: flex;
@@ -256,30 +257,23 @@ tbody th {
     text-align: center;
 }
 
-.analysis-values > div {
+.analysis-values div {
     display: flex;
     flex: 1;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    min-width: 0;
+    gap: 15px;
 }
 
 .analysis-values span {
     font-size: 17px;
-    white-space: nowrap;
 }
 
 .analysis-values strong {
     font-size: 22px;
-    white-space: nowrap;
 }
 
-/* 推奨結果は文字数が多いため少し小さくする */
-.analysis-values .recommendation {
-    font-size: 17px;
-}
 
 /* =================================
    攻撃・防御 切り替えタブ
@@ -385,4 +379,39 @@ tbody th {
     font-size: 16px;
     line-height: 1.15;
     white-space: nowrap;
+}
+
+
+/* =================================
+   防御側：分析結果を3項目で均等配置
+   ================================= */
+.defense-analysis {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.defense-analysis .analysis-item,
+.defense-analysis .recommendation-item {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.defense-analysis .analysis-item span,
+.defense-analysis .analysis-item strong,
+.defense-analysis .recommendation-item span,
+.defense-analysis .recommendation-item strong {
+    white-space: nowrap;
+}
+
+.defense-analysis .recommendation-item {
+    margin-left: 0;
 }
