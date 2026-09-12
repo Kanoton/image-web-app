@@ -767,6 +767,60 @@ modes.forEach(mode => {
         });
     });
 
+    // カード画像をクリックすると、そのカードの使用枚数を+1
+    const addCardFromImage = image => {
+        const input =
+            document.getElementById(image.dataset.cardTarget);
+
+        if (!input) {
+            return;
+        }
+
+        input.value = Number(input.value) + 1;
+        input.dispatchEvent(new Event("input"));
+    };
+
+    mode.querySelectorAll(".battle-card-clickable").forEach(image => {
+        image.addEventListener("click", () => {
+            addCardFromImage(image);
+        });
+
+        image.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                addCardFromImage(image);
+            }
+        });
+    });
+
+    // Restカードを押すと、そのモードのカード使用枚数をすべて0に戻す
+    const resetCards = image => {
+        const prefix =
+            image.dataset.resetCards === "attack"
+                ? "Atk"
+                : "Def";
+
+        mode.querySelectorAll(`input[id^="${prefix}"]`).forEach(input => {
+            input.value = 0;
+        });
+
+        // 複数inputのinputイベントを連続発火させず、最後に1回だけ再計算する
+        calculateDamage(mode, isSurvival);
+    };
+
+    mode.querySelectorAll(".battle-card-reset").forEach(image => {
+        image.addEventListener("click", () => {
+            resetCards(image);
+        });
+
+        image.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                resetCards(image);
+            }
+        });
+    });
+
     calculateDamage(mode, isSurvival);
 });
 

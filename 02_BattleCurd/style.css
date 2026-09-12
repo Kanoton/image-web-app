@@ -598,3 +598,33 @@ tbody th {
         flex: 0 0 260px;
     }
 }
+
+
+/* =================================
+   バトルカード：画像クリック操作
+   ================================= */
+
+/* 通常カード画像を押すと使用枚数を+1 */
+.battle-card-clickable,
+.battle-card-reset {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* キーボード操作時にも選択位置が分かるようにする */
+.battle-card-clickable:focus,
+.battle-card-reset:focus {
+    outline: 3px solid #333;
+    outline-offset: 2px;
+}
+
+/* 押した感覚を軽く出す */
+.battle-card-clickable:active,
+.battle-card-reset:active {
+    transform: scale(0.98);
+}
+
+/* リセットカードはカウンタを持たないため画像上端を他カードと揃える */
+.battle-card-reset-item {
+    justify-content: flex-start;
+}
