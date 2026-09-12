@@ -170,15 +170,31 @@ function renderDamageProbabilityGraph(
         maxProbability = Math.max(maxProbability, probability);
     }
 
-    // 縦軸は最大発生確率より少し上まで表示（10%刻み）
-    const yMax = Math.max(10, Math.ceil(maxProbability / 10) * 10);
+    // 縦軸は5%の倍数から、見やすい目盛り間隔を自動選択する
+    // 1目盛りは 5% / 10% / 15% / 20% のいずれか
+    const yTickCandidates = [5, 10, 15, 20];
+    let yTickStep = 20;
+
+    for (const candidate of yTickCandidates) {
+        // 目盛り数が多すぎない範囲（おおむね4～6本）で最小の刻みを採用
+        const tickCount = Math.ceil(maxProbability / candidate);
+        if (tickCount <= 6) {
+            yTickStep = candidate;
+            break;
+        }
+    }
+
+    const yMax = Math.max(
+        yTickStep,
+        Math.ceil(maxProbability / yTickStep) * yTickStep
+    );
 
     const width = 620;
-    const height = 270;
+    const height = 250;
     const margin = {
-        top: 8,
+        top: 2,
         right: 14,
-        bottom: 30,
+        bottom: 22,
         left: 50
     };
 
@@ -199,9 +215,9 @@ function renderDamageProbabilityGraph(
     );
 
     // 横方向グリッドと縦軸目盛り
-    const yTickCount = 5;
+    const yTickCount = Math.round(yMax / yTickStep);
     for (let i = 0; i <= yTickCount; i++) {
-        const probability = (yMax / yTickCount) * i;
+        const probability = yTickStep * i;
         const y = yToSvg(probability);
 
         svgParts.push(

@@ -493,8 +493,8 @@ tbody th {
 .damage-graph-area {
     min-width: 0;
     width: 100%;
-    height: 330px;
-    padding: 4px 0 0;
+    height: 305px;
+    padding: 0;
 }
 
 .damage-probability-graph {
@@ -563,8 +563,8 @@ tbody th {
     flex-direction: column;
     min-width: 0;
     width: 100%;
-    height: 330px;
-    gap: 10px;
+    height: 305px;
+    gap: 6px;
 }
 
 /* グラフ上端をカード画像の上端に合わせる */
@@ -577,8 +577,8 @@ tbody th {
 
 /* 分析結果はグラフ下の空きスペースへ配置 */
 .battle-result-area .analysis-values {
-    flex: 0 0 50px;
-    height: 50px;
+    flex: 0 0 46px;
+    height: 46px;
     margin-top: 0;
 }
 
