@@ -121,22 +121,19 @@ function getDefenseRecommendation(
         }
     }
 
+    // 推奨表示は3パターンに限定
     if (evadeBetterDice.length === 0) {
-        return "防御が有利";
+        return "回避不要";
     }
 
-    // X, X+1, ... , 6 と連続している場合は「攻撃出目X以上」と表示
-    const firstDice = evadeBetterDice[0];
-    const isContinuousToSix =
-        evadeBetterDice.length === 7 - firstDice &&
-        evadeBetterDice.every((dice, index) => dice === firstDice + index);
-
-    if (isContinuousToSix) {
-        return `攻撃出目${firstDice}以上 → 回避`;
+    if (
+        evadeBetterDice.length === 1 &&
+        evadeBetterDice[0] === 6
+    ) {
+        return "出目6の場合回避";
     }
 
-    // 連続しない場合は、回避を推奨する攻撃ダイスの出目をすべて表示
-    return `攻撃出目${evadeBetterDice.join("・")} → 回避`;
+    return "回避を選択";
 }
 
 function calculateDamage(calculator, isSurvival = false) {
